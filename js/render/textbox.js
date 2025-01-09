@@ -31,8 +31,8 @@ export class TextBox {
 		}
 
 		rebox(canvas, box) {
-				this.x = box.x;
-				this.y = box.y;
+				this.x = Math.floor(box.x);
+				this.y = Math.floor(box.y);
 				const thisTrueWidth = this.box.width - this.lineWidth;
 				const nextTrueWidth = box.width - this.lineWidth;
 				this.fontSize = this.fontSize * nextTrueWidth / thisTrueWidth;

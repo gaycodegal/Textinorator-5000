@@ -29,7 +29,7 @@ export class DrawingCanvas {
 				this.canvas.style.height = `${h}px`;
 				this.width = w;
 				this.height = h;
-				this.smoothIt();
+				this.smoothIt(true);
 				this.ctx.lineCap = "round";
 				this.ctx.lineJoin = "round";
 				if (window.IS_HIGH_DEF) {
@@ -63,9 +63,8 @@ export class DrawingCanvas {
 				this.clear();
 		}
 
-		smoothIt() {
+		smoothIt(smooth) {
 				const ctx = this.ctx;
-				const smooth = true;
 				ctx.imageSmoothingEnabled = smooth;
 				ctx.mozImageSmoothingEnabled = smooth;
 				ctx.webkitImageSmoothingEnabled = smooth;
