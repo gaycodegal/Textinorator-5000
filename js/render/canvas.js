@@ -6,6 +6,7 @@ export class DrawingCanvas {
     constructor(){
 				this.canvas = document.createElement("canvas");
 				this.ctx = this.canvas.getContext("2d");
+				this.textBoxes = [];
     }
 
 		resizeToScreen() {
@@ -33,21 +34,24 @@ export class DrawingCanvas {
 				this.ctx.lineJoin = "round";
 				if (window.IS_HIGH_DEF) {
 						this.scale = 2;
+						// can't use ctx.scale and have emoji work :(
 						//this.ctx.scale(2,2);
 				}
 		}
 
-		calculateTextbox(text, x, y, lineWidth, fontSize, fontFamily) {
-				return new TextBox(this.ctx, text, x, y, lineWidth, fontSize, fontFamily);
+		calculateTextbox(text, x, y, lineWidth, fontSize, fontFamily, fg, bg) {
+				return new TextBox(this.ctx, text, x, y, lineWidth, fontSize, fontFamily, fg, bg);
 		}
 
-		strokeText(text, x, y, lineWidth, fontSize, fontFamily) {
-				const textbox = new TextBox(this.ctx, text, x, y, lineWidth, fontSize, fontFamily);
+		strokeText(text, x, y, lineWidth, fontSize, fontFamily, fg, bg) {
+				const textbox = new TextBox(this.ctx, text, x, y, lineWidth, fontSize, fontFamily, fg, bg);
 				textbox.draw(this);
 				textbox.drawControls(this);
+				this.textBoxes.push(textbox);
 		}
 
 		clear() {
+				this.textBoxes = [];
 				this.ctx.clearRect(0,0, this.width*this.scale, this.height*this.scale);
 		}
 

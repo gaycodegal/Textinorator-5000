@@ -1,15 +1,32 @@
 import {drawControls} from "./controlbox.js";
 
 export class TextBox {
-    constructor(ctx, text, x, y, lineWidth, fontSize, fontFamily){
+    constructor(ctx, text, x, y, lineWidth, fontSize, fontFamily, fg = "black", bg = "white"){
 				this.fontSize = fontSize;
 				this.fontFamily = fontFamily;
 				this.text = text;
 				this.x = x;
 				this.y = y;
 				this.lineWidth = lineWidth;
+				this.fg = fg;
+				this.bg = bg;
+				this.selected = true;
 				this.box = this.calculateSize(ctx, text, x, y, lineWidth);
     }
+
+		select() {
+				this.selected = true;
+		}
+
+		deselect() {
+				this.selected = false;
+		}
+
+		isInside(x,y) {
+				const box = this.box;
+				return x >= box.x && x <= box.x + box.width
+						&& y >= box.y && y <= box.y + box.height;
+		}
 
 		get font() {
 				return `${this.fontSize}px ${this.fontFamily}`;
@@ -45,8 +62,8 @@ export class TextBox {
 				const ctx = canvas.ctx;
 				const box = this.box;
 				ctx.lineWidth=this.lineWidth;
-				ctx.fillStyle="red";
-				ctx.strokeStyle="green";
+				ctx.fillStyle=this.fg;
+				ctx.strokeStyle=this.bg;
 				ctx.strokeText(this.text, box.x + box.offsetX, box.y + box.offsetY);
 				ctx.fillText(this.text, box.x + box.offsetX, box.y + box.offsetY);
 		}
