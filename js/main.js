@@ -1,6 +1,6 @@
 import * as DrawingCanvas from "./render/canvas.js";
 import {Screen} from "./render/screen.js";
-import {setUpBackgroundSetter, setUpDeleteTextEvent} from "./logic/set-background.js";
+import {setUpBackgroundSetter, setUpDeleteTextEvent, setUpDownloadButton} from "./logic/set-background.js";
 
 export function main() {
 		const canvas = DrawingCanvas.createMainCanvas(document.getElementById("container"));
@@ -16,6 +16,7 @@ export function main() {
 		window.screen = screen;
 		setUpDeleteTextEvent(screen, controlsElement);
 		setUpBackgroundSetter(screen, controlsElement);
+		setUpDownloadButton(screen, controlsElement);
 		/*const dragListen = new DragListener(canvas.canvas, canvas.scale, 30, listen);
 		dragListen.bind();*/
 }
