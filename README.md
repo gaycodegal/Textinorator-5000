@@ -1,4 +1,4 @@
-# Web meme
+# Textinorator 5000
 
 This is a tool for adding text to images, designed to be usable on mobile offline. I found the current tooling for adding text to images insufficient.
 

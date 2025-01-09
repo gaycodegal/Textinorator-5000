@@ -1,4 +1,5 @@
 import {drawControls} from "./controlbox.js";
+import {Point} from "../math/point.js";
 
 export class TextBox {
     constructor(ctx, text, x, y, lineWidth, fontSize, fontFamily, fg = "black", bg = "white"){
@@ -13,6 +14,15 @@ export class TextBox {
 				this.selected = true;
 				this.box = this.calculateSize(ctx, text, x, y, lineWidth);
     }
+
+		moveTo(point) {
+				this.box.x = point.x;
+				this.box.y = point.y;
+		}
+
+		point() {
+				return new Point(this.box.x, this.box.y);
+		}
 
 		select() {
 				this.selected = true;

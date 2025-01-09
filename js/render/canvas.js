@@ -46,13 +46,21 @@ export class DrawingCanvas {
 		strokeText(text, x, y, lineWidth, fontSize, fontFamily, fg, bg) {
 				const textbox = new TextBox(this.ctx, text, x, y, lineWidth, fontSize, fontFamily, fg, bg);
 				textbox.draw(this);
-				textbox.drawControls(this);
 				this.textBoxes.push(textbox);
 		}
 
 		clear() {
-				this.textBoxes = [];
 				this.ctx.clearRect(0,0, this.width*this.scale, this.height*this.scale);
+		}
+
+		repaint() {
+				this.clear();
+				this.textBoxes.forEach(box=>box.draw(this));
+		}
+
+		wipe() {
+				this.textBoxes = [];
+				this.clear();
 		}
 
 		smoothIt() {
