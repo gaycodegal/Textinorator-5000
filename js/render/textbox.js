@@ -1,5 +1,7 @@
+import {BoxDragHandler} from "./boxdraghandler.js";
 import {drawControls} from "./controlbox.js";
 import {Point} from "../math/point.js";
+import {Box} from "../math/box.js";
 
 export class TextBox {
     constructor(ctx, text, x, y, lineWidth, fontSize, fontFamily, fg = "black", bg = "white"){
@@ -22,6 +24,26 @@ export class TextBox {
 
 		point() {
 				return new Point(this.box.x, this.box.y);
+		}
+
+		toBox() {
+				return new Box(this.box.x, this.box.y, this.box.width, this.box.height);
+		}
+
+		rebox(canvas, fontSize, x, y) {
+				this.fontSize = fontSize;
+				this.x = x;
+				this.y = y;
+				console.log(this.font);
+				this.box = this.calculateSize(canvas.ctx, this.text, x, y, this.lineWidth);
+		}
+		
+		points() {
+				return [new Point(this.box.x, this.box.y),
+								new Point(this.box.x + this.box.width, this.box.y),
+								new Point(this.box.x + this.box.width,
+													this.box.y + this.box.height),
+								new Point(this.box.x, this.box.y + this.box.height)];
 		}
 
 		select() {
@@ -71,6 +93,7 @@ export class TextBox {
 		draw(canvas) {
 				const ctx = canvas.ctx;
 				const box = this.box;
+				ctx.font = this.font;
 				ctx.lineWidth=this.lineWidth;
 				ctx.fillStyle=this.fg;
 				ctx.strokeStyle=this.bg;
@@ -78,4 +101,22 @@ export class TextBox {
 				ctx.fillText(this.text, box.x + box.offsetX, box.y + box.offsetY);
 		}
 
+		getListenerForPoint (canvas, point, clickRadius) {
+				const pointMap = this.points().map(p=>({point: p, dist:p.dist(point)}));
+				pointMap[0].top = true;
+				pointMap[1].top = true;
+				pointMap[2].top = false;
+				pointMap[3].top = false;
+				pointMap[0].left = true;
+				pointMap[1].left = false;
+				pointMap[2].left = false;
+				pointMap[3].left = true;
+				pointMap.sort(Point.sortDistsMinFirst);
+				var closest = pointMap[0];
+				if (closest.dist > clickRadius) {
+						return null;
+				}
+
+				return new BoxDragHandler(canvas, this, closest);
+		}
 }

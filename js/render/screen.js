@@ -2,12 +2,14 @@ import {DragListener} from "../events/drag.js";
 import {Point} from "../math/point.js";
 
 export class Screen {
-		constructor(canvas, snapRadius){
+		constructor(canvas, snapRadius, clickRadius){
 				this.snapRadius = snapRadius;
+				this.clickRadius = clickRadius;
 				this.canvas = canvas;
 				this.dragListen = new DragListener(canvas.canvas, canvas.scale, this.snapRadius, this);
 				this.dragListen.bind();
 				this.downpoint = null;
+				this.dragForwardListener = null;
 		}
 
 		findClickedTextbox(point) {
@@ -24,7 +26,14 @@ export class Screen {
 		}
 		
 		ondown(pt) {
-				this.canvas.ctx.fillStyle = "red";
+				if (this.focus != null) {
+						this.dragForwardListener = this.focus.getListenerForPoint(this.canvas, pt, this.clickRadius * canvas.scale);
+				}
+				if (this.dragForwardListener != null) {
+						this.dragForwardListener.ondown(pt);
+						return;
+				}
+				
 				const box = this.findClickedTextbox(pt);
 				if (box) {
 						box.drawControls(this.canvas);
@@ -33,7 +42,11 @@ export class Screen {
 				}
 		}
 		onmove(pt, moveOffset) {
-				this.canvas.ctx.fillStyle = "yellow";
+				if (this.dragForwardListener != null) {
+						this.dragForwardListener.onmove(pt, moveOffset);
+						return;
+				}
+
 				if(this.focus) {
 						this.focus.moveTo(this.downpoint.add(moveOffset));
 						this.canvas.repaint();
@@ -48,15 +61,22 @@ export class Screen {
 				this.focus = null;
 		}
 		onup(pt, moveOffset, moved) {
+				if (this.dragForwardListener != null) {
+						this.dragForwardListener.onup(pt, moveOffset, moved);
+						this.dragForwardListener = null;
+						return;
+				}
+
 				if(moved){
 						if(this.focus) {
 								this.focus.moveTo(this.downpoint.add(moveOffset));
 						}
-				} else {
-						this.resetFocus();
+						this.focus = null;
 				}
 				this.canvas.repaint();
-				this.focus = null;
+				if (this.focus != null) {
+						this.focus.drawControls(this.canvas);
+				}
 		}
 
 }

@@ -36,7 +36,7 @@ export function main() {
 		canvas.clear();
 		canvas.strokeText("fish flakes 😊 물고기 사료", 0,0,10, 100, "sans-serif", "yellow", "green");
 		canvas.strokeText("😊🐟", 100,200,10, 100, "sans-serif", "yellow", "green");
-		const screen = new Screen(canvas, 30);
+		const screen = new Screen(canvas, 30, 30);
 		window.screen = screen;
 		
 		/*const dragListen = new DragListener(canvas.canvas, canvas.scale, 30, listen);
