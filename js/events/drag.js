@@ -6,7 +6,7 @@ export class DragListener {
 				this.scale = scale;
 				this.deadzone = deadzone;
 				this.listener = listener;
-
+				this.prev = null;
 				this.ondown = this.ondown.bind(this);
 				this.onmove = this.onmove.bind(this);
 				this.onup = this.onup.bind(this);
@@ -24,7 +24,9 @@ export class DragListener {
 
 		pointFromEvent(event, downpoint = null) {
 				const offset = new Point(0,0);
-				const pt = Point.fromEvent(event).add(offset).scale(this.scale);
+				const ptRaw = Point.fromEvent(event, this.prev);
+				this.prev = ptRaw;
+				const pt = ptRaw.add(offset).scale(this.scale);
 				if (downpoint && pt.manhatten(downpoint) < this.deadzone * this.scale) {
 						return downpoint;
 				}

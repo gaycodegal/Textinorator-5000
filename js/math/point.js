@@ -4,7 +4,14 @@ export class Point {
 				this.y = y;
 		}
 
-		static fromEvent (e) {
+		clone(){
+				return new Point(this.x, this.y);
+		}
+
+		static fromEvent (e, prev) {
+				if (e.touches && (e.touches.length == 0 || e.touches[0] == null)) {
+						return prev;
+				}
 				e.touches && (e = e.touches[0]);
 				var x = e.clientX || e.pageX;
 				var y = e.clientY || e.pageY;

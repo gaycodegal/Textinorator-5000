@@ -34,7 +34,6 @@ export class TextBox {
 				this.fontSize = fontSize;
 				this.x = x;
 				this.y = y;
-				console.log(this.font);
 				this.box = this.calculateSize(canvas.ctx, this.text, x, y, this.lineWidth);
 		}
 		

@@ -37,7 +37,6 @@ export class BoxDragHandler {
 				// pass
 		}
 		onmove(pt, moveOffset) {
-				console.log(moveOffset);
 				const nextDist = this.center.dist(pt);
 				this.canvas.repaint();
 				const nextBox = this.rebox(nextDist);
