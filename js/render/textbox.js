@@ -30,11 +30,13 @@ export class TextBox {
 				return new Box(this.box.x, this.box.y, this.box.width, this.box.height);
 		}
 
-		rebox(canvas, fontSize, x, y) {
-				this.fontSize = fontSize;
-				this.x = x;
-				this.y = y;
-				this.box = this.calculateSize(canvas.ctx, this.text, x, y, this.lineWidth);
+		rebox(canvas, box) {
+				this.x = box.x;
+				this.y = box.y;
+				const thisTrueWidth = this.box.width - this.lineWidth;
+				const nextTrueWidth = box.width - this.lineWidth;
+				this.fontSize = this.fontSize * nextTrueWidth / thisTrueWidth;
+				this.box = this.calculateSize(canvas.ctx, this.text, this.x, this.y, this.lineWidth);
 		}
 		
 		points() {
