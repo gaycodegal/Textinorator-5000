@@ -8,8 +8,7 @@ export function main() {
 		//const listen = new Listener(canvas);
 		console.log("hi");
 		canvas.clear();
-		canvas.strokeText("fish flakes 😊 물고기 사료", 0,0,10, 100, "sans-serif", "white", "black");
-		canvas.strokeText("😊🐟", 100,200,10, 100, "sans-serif", "white", "black");
+		canvas.strokeText("text here 😊", 0,0,10, 100, "sans-serif", "white", "black");
 		const controlsElement = document.getElementById("controls");		
 		const textSetter = controls.getElementsByClassName("text-setter")[0];
 		const screen = new Screen(canvas, 30, 30, textSetter);

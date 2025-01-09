@@ -9,6 +9,8 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 ## Desires
 
 - Upload custom fonts (to be cached in browser)
+- Support emoji + non-ascii characters [complete]
+  - This depends on your browser, but most should do it
 - Stroke
 - Background [complete]
 - Rotation
