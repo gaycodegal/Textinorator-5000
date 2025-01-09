@@ -145,7 +145,10 @@ export class Screen {
 				if (this.focus != null) {
 						this.focus.drawControls(this.canvas);
 				}
-				this.textSetter.value = this.getFocusedText();
+				const focusedTextValue = this.getFocusedText();
+				if (this.textSetter.value != focusedTextValue) {
+						this.textSetter.value = focusedTextValue;
+				}
 		}
 
 }

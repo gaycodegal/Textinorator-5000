@@ -1,19 +1,26 @@
 # Textinorator 5000
 
-This is a tool for adding text to images, designed to be usable on mobile offline. I found the current tooling for adding text to images insufficient.
+This is a tool for adding text to images, designed to be usable on mobile offline. I found the current online tooling for adding text to images insufficient. It's currently a very ugly work in progress, but it is usable. I will design a more visually appealing frontend with more settings later.
+
+Really the drag to scale text was a feature I personally wanted but hadn't seen in online image generators.
+
+Additionally, this tool is self contained, and can be hosted anywhere without ads. If you have an app that serves zipped html files, you can even run it from the github zip download.
 
 ## Desires
 
 - Upload custom fonts (to be cached in browser)
 - Stroke
-- Background
+- Background [complete]
 - Rotation
-- Scale
+- Scale [complete]
+- Move / edit / add text [complete]
+- A better UI
+- Offline use / install via PWA install/service worker tech.
 
-## Proposed controls
+## Controls
 
 - Click on text to swap focus to it
-- once focus is on text, drag anywhere to move the text
-- click and drag on a corner of focused text to resize it
-- perhaps double tap off the current text to add new text
-- double tap on current text to swap to rotation mode?
+- Once focus is on text, drag anywhere to move the text
+- Click and drag on a corner of focused text to resize it
+- Click on anything that isn't text and type your text in the input
+  to add a new text line to the screen.
