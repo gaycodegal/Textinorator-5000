@@ -8,10 +8,7 @@ export class Point {
 				return new Point(this.x, this.y);
 		}
 
-		static fromEvent (e, prev) {
-				if (e.touches && (e.touches.length == 0 || e.touches[0] == null)) {
-						return prev;
-				}
+		static fromEvent (e) {
 				e.touches && (e = e.touches[0]);
 				var x = e.clientX || e.pageX;
 				var y = e.clientY || e.pageY;

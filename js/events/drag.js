@@ -24,9 +24,7 @@ export class DragListener {
 
 		pointFromEvent(event, downpoint = null) {
 				const offset = new Point(0,0);
-				const ptRaw = Point.fromEvent(event, this.prev);
-				this.prev = ptRaw;
-				const pt = ptRaw.add(offset).scale(this.scale);
+				const pt = Point.fromEvent(event, this.prev).add(offset).scale(this.scale);
 				if (downpoint && pt.manhatten(downpoint) < this.deadzone * this.scale) {
 						return downpoint;
 				}
@@ -37,6 +35,7 @@ export class DragListener {
 				event.preventDefault();
 				event.stopPropagation();
 				const pt = this.pointFromEvent(event);
+				this.prev = pt;
 				this.downpoint = pt;
 				this.listener.ondown(pt);
 		}
@@ -48,17 +47,22 @@ export class DragListener {
 				event.preventDefault();
 				event.stopPropagation();
 				const pt = this.pointFromEvent(event, this.downpoint);
+				this.prev = pt;
 				const diff = pt.subtract(this.downpoint);
 				this.listener.onmove(pt, diff);
 		}
 
 		onup (event) {
+				if (this.prev == null) {
+						return;
+				}
 				event.preventDefault();
 				event.stopPropagation();
-				const pt = this.pointFromEvent(event, this.downpoint);
+				const pt = this.prev;
 				const diff = pt.subtract(this.downpoint);
 				this.listener.onup(pt, diff, !pt.equals(this.downpoint));
 				this.downpoint = null;
+				this.prev = null;
 		}
 
 }

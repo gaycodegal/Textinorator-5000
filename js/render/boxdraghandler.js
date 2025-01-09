@@ -48,6 +48,7 @@ export class BoxDragHandler {
 						const nextDist = this.center.dist(pt);
 						const nextBox = this.rebox(nextDist);
 						const nextRatio = nextBox.width/this.originBox.width;
+						// TODO account for lineWidth
 						this.box.rebox(this.canvas, nextRatio * this.box.fontSize, nextBox.x, nextBox.y);
 						this.canvas.repaint();						
 						this.box.drawControls(this.canvas);
