@@ -103,7 +103,7 @@ export class TextBox {
 		}
 
 		getListenerForPoint (canvas, point, clickRadius) {
-				const pointMap = this.points().map(p=>({point: p, dist:p.dist(point)}));
+				const pointMap = this.points().map((p, i)=>({index: i, point: p, dist:p.dist(point)}));
 				pointMap[0].top = true;
 				pointMap[1].top = true;
 				pointMap[2].top = false;
@@ -112,12 +112,13 @@ export class TextBox {
 				pointMap[1].left = false;
 				pointMap[2].left = false;
 				pointMap[3].left = true;
+				const originalPoints = pointMap.slice();
 				pointMap.sort(Point.sortDistsMinFirst);
 				var closest = pointMap[0];
 				if (closest.dist > clickRadius) {
 						return null;
 				}
-
-				return new BoxDragHandler(canvas, this, closest);
+				const furthest = originalPoints[(closest.index + 2) % 4];
+				return new BoxDragHandler(canvas, this, closest, furthest);
 		}
 }
