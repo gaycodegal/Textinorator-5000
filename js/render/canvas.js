@@ -7,36 +7,49 @@ export class DrawingCanvas {
 				this.canvas = document.createElement("canvas");
 				this.ctx = this.canvas.getContext("2d");
 				this.textBoxes = [];
+				this.background = null;
     }
 
 		resizeToScreen() {
-				this.resize(window.innerWidth, window.innerHeight);
-		}
-
-		resizeToElement(element) {
-				this.resize(element.clientWidth, element.clientHeight - 1);
-		}
-
-		resize(w, h) {
-				if (window.IS_HIGH_DEF) {
-						this.canvas.width = w * 2;
-						this.canvas.height = h * 2;
-				} else {
-						this.canvas.width = w;
-						this.canvas.height = h;
-				}
-				this.canvas.style.width = `${w}px`;
-				this.canvas.style.height = `${h}px`;
-				this.width = w;
-				this.height = h;
-				this.smoothIt(true);
-				this.ctx.lineCap = "round";
-				this.ctx.lineJoin = "round";
 				if (window.IS_HIGH_DEF) {
 						this.scale = 2;
 						// can't use ctx.scale and have emoji work :(
 						//this.ctx.scale(2,2);
 				}
+				this.resize(window.innerWidth * this.scale, window.innerHeight * this.scale);
+		}
+
+		resizeToElement(element) {
+				if (window.IS_HIGH_DEF) {
+						this.scale = 2;
+						// can't use ctx.scale and have emoji work :(
+						//this.ctx.scale(2,2);
+				}
+
+				this.resize(element.clientWidth * this.scale, (element.clientHeight - 1) * this.scale);
+		}
+
+		resize(w, h) {
+				if (window.IS_HIGH_DEF) {
+						this.scale = 2;
+						// can't use ctx.scale and have emoji work :(
+						//this.ctx.scale(2,2);
+				}
+				if (window.IS_HIGH_DEF) {
+						this.canvas.width = w;
+						this.canvas.height = h;
+				} else {
+						this.canvas.width = w;
+						this.canvas.height = h;
+				}
+				this.canvas.style.width = `${w/this.scale}px`;
+				this.canvas.style.height = `${h/this.scale}px`;
+				this.width = w;
+				this.height = h;
+				this.smoothIt(true);
+				this.ctx.lineCap = "round";
+				this.ctx.lineJoin = "round";
+				this.repaint();
 		}
 
 		calculateTextbox(text, x, y, lineWidth, fontSize, fontFamily, fg, bg) {
@@ -50,7 +63,10 @@ export class DrawingCanvas {
 		}
 
 		clear() {
-				this.ctx.clearRect(0,0, this.width*this.scale, this.height*this.scale);
+				this.ctx.clearRect(0,0, this.width, this.height);
+				if(this.background != null) {
+						this.ctx.drawImage(this.background, 0, 0)
+				}
 		}
 
 		repaint() {
@@ -69,6 +85,11 @@ export class DrawingCanvas {
 				ctx.mozImageSmoothingEnabled = smooth;
 				ctx.webkitImageSmoothingEnabled = smooth;
     }
+
+		setBackground(img) {
+				this.background = img;
+				this.resize(img.width, img.height);
+		}
 }
 
 
