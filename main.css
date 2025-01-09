@@ -3,6 +3,17 @@ html {
     margin: 0px;
     height: 100%;
 }
+
+body {
+		padding: 50px;
+		background: black;
+}
+
+.container {
+		background: white;
+		height: 100%;
+}
+
 .noselect {
     -webkit-touch-callout: none;
     /* iOS Safari */

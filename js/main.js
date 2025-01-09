@@ -29,7 +29,7 @@ class Listener{
 }
 
 export function main() {
-		const canvas = DrawingCanvas.createMainCanvas(document.body);
+		const canvas = DrawingCanvas.createMainCanvas(document.getElementById("container"));
 		window.canvas = canvas;
 		//const listen = new Listener(canvas);
 		console.log("hi");

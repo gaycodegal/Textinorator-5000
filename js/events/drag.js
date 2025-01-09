@@ -22,9 +22,20 @@ export class DragListener {
 				target.addEventListener("mouseup", this.onup);
 		}
 
+		unbind() {
+				const target = this.target;
+				target.removeEventListener("touchstart", this.ondown);
+				target.removeEventListener("mousedown", this.ondown);
+				target.removeEventListener("touchmove", this.onmove);
+				target.removeEventListener("mousemove", this.onmove);
+				target.removeEventListener("touchend", this.onup);
+				target.removeEventListener("mouseup", this.onup);
+		}
+
 		pointFromEvent(event, downpoint = null) {
-				const offset = new Point(0,0);
-				const pt = Point.fromEvent(event, this.prev).add(offset).scale(this.scale);
+				const rect = this.target.getBoundingClientRect();
+				const offset = new Point(rect.left,rect.top);
+				const pt = Point.fromEvent(event, this.prev).subtract(offset).scale(this.scale);
 				if (downpoint && pt.manhatten(downpoint) < this.deadzone * this.scale) {
 						return downpoint;
 				}
