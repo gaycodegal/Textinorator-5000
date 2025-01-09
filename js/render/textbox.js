@@ -17,6 +17,8 @@ export class TextBox {
     }
 
 		moveTo(point) {
+				this.x = point.x;
+				this.y = point.y;
 				this.box.x = point.x;
 				this.box.y = point.y;
 		}
