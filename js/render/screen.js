@@ -10,6 +10,7 @@ export class Screen {
 				this.dragListen.bind();
 				this.downpoint = null;
 				this.dragForwardListener = null;
+				this.startedWithFocus = false;
 		}
 
 		findClickedTextbox(point) {
@@ -26,6 +27,7 @@ export class Screen {
 		}
 		
 		ondown(pt) {
+				this.startedWithFocus = false;
 				if (this.focus != null) {
 						this.dragForwardListener = this.focus.getListenerForPoint(this.canvas, pt, this.clickRadius * canvas.scale);
 				}
@@ -34,8 +36,10 @@ export class Screen {
 						return;
 				}
 				
-				const box = this.findClickedTextbox(pt);
+				const box = this.findClickedTextbox(pt) || this.focus;
+				this.startedWithFocus = this.focus == box;
 				if (box) {
+						this.canvas.repaint();
 						box.drawControls(this.canvas);
 						this.downpoint = box.point();
 						this.focus = box;
@@ -71,9 +75,15 @@ export class Screen {
 						if(this.focus) {
 								this.focus.moveTo(this.downpoint.add(moveOffset));
 						}
-						this.focus = null;
+				} else {
+						if (this.focus != null && this.startedWithFocus) {
+								this.focus = null;
+								this.startedWithFocus = false;
+						}
 				}
 				this.canvas.repaint();
+
+				
 				if (this.focus != null) {
 						this.focus.drawControls(this.canvas);
 				}
