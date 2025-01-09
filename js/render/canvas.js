@@ -26,7 +26,7 @@ export class DrawingCanvas {
 						//this.ctx.scale(2,2);
 				}
 
-				this.resize(element.clientWidth * this.scale, (element.clientHeight - 1) * this.scale);
+				this.resize(element.clientWidth * this.scale, (element.clientHeight) * this.scale);
 		}
 
 		resize(w, h) {
@@ -60,6 +60,7 @@ export class DrawingCanvas {
 				const textbox = new TextBox(this.ctx, text, x, y, lineWidth, fontSize, fontFamily, fg, bg);
 				textbox.draw(this);
 				this.textBoxes.push(textbox);
+				return textbox;
 		}
 
 		clear() {

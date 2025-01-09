@@ -43,6 +43,9 @@ export class DragListener {
 		}
 
 		ondown (event) {
+				if (event.button != null && event.button != 0) {
+						return;
+				}
 				event.preventDefault();
 				event.stopPropagation();
 				const pt = this.pointFromEvent(event);

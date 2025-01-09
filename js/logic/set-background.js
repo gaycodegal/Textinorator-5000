@@ -1,4 +1,11 @@
 
+
+export function setUpDeleteTextEvent(screen, controls) {
+		const deleteTextButton = controls.getElementsByClassName("delete-text")[0];
+		deleteTextButton.addEventListener('click', screen.deleteFocusedText.bind(screen));
+}
+
+
 function setAsBackground(e){
     var reader = new FileReader();
     reader.onload = function(event){
@@ -10,7 +17,7 @@ function setAsBackground(e){
     }
     reader.readAsDataURL(e.target.files[0]);     
 }
-export function setUpBackgroundSetter(screen, controlContainer) {
+export function setUpBackgroundSetter(screen, controls) {
 		const picker = controls.getElementsByClassName("image-picker")[0];
 		picker.addEventListener('change', setAsBackground.bind({screen}), false);
 

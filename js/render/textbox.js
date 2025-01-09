@@ -7,14 +7,13 @@ export class TextBox {
     constructor(ctx, text, x, y, lineWidth, fontSize, fontFamily, fg = "black", bg = "white"){
 				this.fontSize = fontSize;
 				this.fontFamily = fontFamily;
-				this.text = text;
 				this.x = x;
 				this.y = y;
 				this.lineWidth = lineWidth;
 				this.fg = fg;
 				this.bg = bg;
 				this.selected = true;
-				this.box = this.calculateSize(ctx, text, x, y, lineWidth);
+				this.retext(ctx, text);
     }
 
 		moveTo(point) {
@@ -28,6 +27,11 @@ export class TextBox {
 
 		toBox() {
 				return new Box(this.box.x, this.box.y, this.box.width, this.box.height);
+		}
+
+		retext(ctx, text) {
+				this.text = text;
+				this.box = this.calculateSize(ctx, this.text, this.x, this.y, this.lineWidth);
 		}
 
 		rebox(canvas, box) {
