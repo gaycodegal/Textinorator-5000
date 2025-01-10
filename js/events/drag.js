@@ -14,8 +14,8 @@ export class DragListener {
 
 		bind() {
 				const target = this.target;
-				target.addEventListener("touchstart", this.ondown);
-				target.addEventListener("mousedown", this.ondown);
+				window.addEventListener("touchstart", this.ondown);
+				window.addEventListener("mousedown", this.ondown);
 				window.addEventListener("touchmove", this.onmove);
 				window.addEventListener("mousemove", this.onmove);
 				window.addEventListener("touchend", this.onup);
@@ -42,8 +42,13 @@ export class DragListener {
 				return pt;
 		}
 
+		verifyEvent (event) {
+				return event.target == this.target;
+		}
+
 		ondown (event) {
-				if (event.button != null && event.button != 0) {
+				if (!this.verifyEvent(event) || (event.button != null && event.button != 0)) {
+						this.downpoint = null;
 						return;
 				}
 				event.preventDefault();
@@ -67,7 +72,7 @@ export class DragListener {
 		}
 
 		onup (event) {
-				if (this.prev == null) {
+				if (this.prev == null || this.downpoint == null) {
 						return;
 				}
 				event.preventDefault();

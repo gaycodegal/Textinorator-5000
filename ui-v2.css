@@ -3,27 +3,74 @@ html {
     margin: 0px;
     height: 100%;
 }
-
-canvas {
+.render-canvas {
 		image-rendering: pixelated;
+		padding: 0px;
+		margin: 0px;
+		display: block;
+}
+
+.controls-layout {
+		pointer-events: none;
+}
+
+.spacer-for-controls {
+		height: 100px;
+		width: 100px;
+		display: block;
+}
+
+.tool-controls {
+		pointer-events: auto;
+		background: rgba(255,255,255, 0.5);
+		padding: 10px 10px 0 10px;
+		border-radius: 15px 15px 0 0;
+		display: inline-block;
+		margin: auto;
+		max-width: 300px;
+		max-height: 100px;
+}
+
+.tool-controls label {
+		background: white;
+}
+
+.canvas-scrollable{
+		overflow-x: scroll;
+		overflow-y: scroll;
+		width: 100%;
+		max-height: 100%;
 		padding: 0px;
 		margin: 0px;
 }
 
-body {
-		padding: 50px;
+.horizontal-spacer {
+		flex: 1 1 auto;
 }
 
-.container {
+.canvas-parent {
+		display: flex;
+		width: 100%;
+		max-height: 100%;
+		padding: 0px;
+		margin: 0px;
+}
+
+.full-screen {
 		position: absolute;
 		top: 0px;
 		left: 0px;
 		bottom: 0px;
 		right: 0px;
-		display: inline-block;
 		padding: 0px;
 		margin: 0px;
-		
+}
+
+.full-screen-snap-bottom {
+		position: absolute;
+		left: 0px;
+		bottom: 0px;
+		right: 0px;
 }
 
 .noselect {

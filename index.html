@@ -11,23 +11,29 @@
 
 	<body>
 		<script src="./js/init-module.js"></script>
-		<div id="container" class="container"></div>
-		<div id="controls" class="controls">
-			<label for="image-picker">Base Image:</label>
-			<input type="file" id="image-picker" class="image-picker"/>
-			<br>
+		<div id="container" class="container">
+			<div class="canvas-parent">
+				<div class="canvas-spot"></div>
+			</div>
+		</div>
+		
+		<div id="tool-controls" class="tool-controls">
 			<label for="text-setter">Selected Text:</label>
 			<input type="text" id="text-setter" class="text-setter"/>
 			<br>
 			<button class="delete-text">Delete Text</button>
+		</div>
+		<hr>
+		<div id="general-controls" class="general-controls">
+			<label for="image-picker">Base Image:</label>
+			<input type="file" id="image-picker" class="image-picker"/>
 			<br>
-			<hr>
+			
 			<label for="image-name">Image Name</label>
 			<input type="text" id="image-name" class="image-name"/>
 			<br>
-			<br>
-			<button class="download-image">Download Image</button>
 
+			<button class="download-image">Download Image</button>
 		</div>
 	</body>
 
