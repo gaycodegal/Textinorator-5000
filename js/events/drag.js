@@ -16,10 +16,10 @@ export class DragListener {
 				const target = this.target;
 				target.addEventListener("touchstart", this.ondown);
 				target.addEventListener("mousedown", this.ondown);
-				target.addEventListener("touchmove", this.onmove);
-				target.addEventListener("mousemove", this.onmove);
-				target.addEventListener("touchend", this.onup);
-				target.addEventListener("mouseup", this.onup);
+				window.addEventListener("touchmove", this.onmove);
+				window.addEventListener("mousemove", this.onmove);
+				window.addEventListener("touchend", this.onup);
+				window.addEventListener("mouseup", this.onup);
 		}
 
 		unbind() {

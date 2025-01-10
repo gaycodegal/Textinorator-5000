@@ -8,7 +8,6 @@ canvas {
 		image-rendering: pixelated;
 		padding: 0px;
 		margin: 0px;
-		
 }
 
 body {
@@ -16,9 +15,15 @@ body {
 }
 
 .container {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		bottom: 0px;
+		right: 0px;
 		display: inline-block;
 		padding: 0px;
 		margin: 0px;
+		
 }
 
 .noselect {
