@@ -11,13 +11,19 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - Upload custom fonts (to be cached in browser)
 - Support emoji + non-ascii characters [complete]
   - This depends on your browser, but most should do it
-- Stroke
+- Stroke style, color, size
+- Color
 - Background [complete]
 - Rotation
 - Scale [complete]
 - Move / edit / add text [complete]
 - A better UI
 - Offline use / install via PWA install/service worker tech.
+- Vertical text support
+  - My math on text box bounding size is insufficient for vertical text
+	  in a way I am really unclear what's wrong at the moment. Canvas
+		supports it just fine though, so I'll need to add a toggle
+		and do the math for completeness
 
 ## Controls
 
