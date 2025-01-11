@@ -151,6 +151,7 @@ export class Screen {
 				const focusedTextValue = this.getFocusedText();
 				if (this.textSetter.value != focusedTextValue) {
 						this.textSetter.value = focusedTextValue;
+						this.textSetter.blur();
 				}
 		}
 

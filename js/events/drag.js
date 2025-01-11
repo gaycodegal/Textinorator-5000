@@ -11,6 +11,7 @@ export class DragListener {
 				this.onmove = this.onmove.bind(this);
 				this.onup = this.onup.bind(this);
 				this.dragging = false;
+				this.isTrueDrag = false;
 		}
 
 		bind() {
@@ -48,6 +49,7 @@ export class DragListener {
 		}
 
 		ondown (event) {
+				this.isTrueDrag = false;
 				if (!this.verifyEvent(event) || (event.button != null && event.button != 0)) {
 						this.dragging = false;
 						this.downpoint = null;
@@ -56,6 +58,11 @@ export class DragListener {
 				const pt = this.pointFromEvent(event);
 				this.prev = pt;
 				this.downpoint = pt;
+
+				if (this.listener.focus == null) {
+						this.dragging = false;
+						return;
+				}
 				this.dragging = this.listener.ondown(pt);
 				if (this.dragging) {
 						event.preventDefault();
@@ -69,9 +76,10 @@ export class DragListener {
 				}
 				const pt = this.pointFromEvent(event, this.downpoint);
 				const diff = pt.subtract(this.downpoint);
-				// TODO calculate if we're dragging or tapping
-				// to focus / unfocus on elements
 				if (!this.dragging) {
+						if (!pt.equals(this.downpoint)) {
+								this.isTrueDrag = true;
+						}
 						return;
 				}
 				event.preventDefault();
@@ -81,16 +89,31 @@ export class DragListener {
 		}
 
 		onup (event) {
-				if (!this.dragging || this.prev == null || this.downpoint == null) {
+				if (this.prev == null || this.downpoint == null) {
 						return;
 				}
-				this.dragging = false;
-				event.preventDefault();
-				event.stopPropagation();
 				const pt = this.prev;
 				const diff = pt.subtract(this.downpoint);
+				if (!this.dragging) {
+						if (!this.isTrueDrag) {
+								event.preventDefault();
+								event.stopPropagation();
+								this.listener.ondown(this.downpoint);
+								this.listener.onmove(pt, diff);
+								this.listener.onup(pt, diff, !pt.equals(this.downpoint));
+						}
+						this.downpoint = null;
+						this.prev = null;
+						this.dragging = false;
+						this.isTrueDrag = false;
+						return;
+				}
+
+				event.preventDefault();
+				event.stopPropagation();
 				this.listener.onup(pt, diff, !pt.equals(this.downpoint));
 				this.downpoint = null;
+				this.dragging = false;
 				this.prev = null;
 		}
 
