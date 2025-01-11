@@ -53,24 +53,31 @@ export class DragListener {
 						this.downpoint = null;
 						return;
 				}
-				this.dragging = true;
-				event.preventDefault();
-				event.stopPropagation();
 				const pt = this.pointFromEvent(event);
 				this.prev = pt;
 				this.downpoint = pt;
-				this.listener.ondown(pt);
+				this.dragging = this.listener.ondown(pt);
+				if (this.dragging) {
+						event.preventDefault();
+						event.stopPropagation();
+				}
+				console.log(this.dragging);
 		}
 
 		onmove (event) {
-				if (!this.dragging || this.downpoint == null) {
+				if (this.downpoint == null) {
+						return;
+				}
+				const pt = this.pointFromEvent(event, this.downpoint);
+				const diff = pt.subtract(this.downpoint);
+				// TODO calculate if we're dragging or tapping
+				// to focus / unfocus on elements
+				if (!this.dragging) {
 						return;
 				}
 				event.preventDefault();
 				event.stopPropagation();
-				const pt = this.pointFromEvent(event, this.downpoint);
 				this.prev = pt;
-				const diff = pt.subtract(this.downpoint);
 				this.listener.onmove(pt, diff);
 		}
 

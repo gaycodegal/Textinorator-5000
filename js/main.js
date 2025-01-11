@@ -11,7 +11,11 @@ export function main() {
 		const generalControlsElement = document.getElementById("general-controls");		
 		const toolControlsElement = document.getElementById("tool-controls");		
 		const textSetter = toolControlsElement.getElementsByClassName("text-setter")[0];
-		const screen = new Screen(canvas, 30, 30, textSetter);
+		const screen = new Screen(
+				canvas,
+				/* snap deadzone */ 5,
+				/* handle drag click zone */ 30,
+				textSetter);
 		window.screen = screen;
 		setUpDeleteTextEvent(screen, toolControlsElement);
 		setUpBackgroundSetter(screen, generalControlsElement);
