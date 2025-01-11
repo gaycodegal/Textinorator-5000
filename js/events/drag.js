@@ -10,6 +10,8 @@ export class DragListener {
 				this.ondown = this.ondown.bind(this);
 				this.onmove = this.onmove.bind(this);
 				this.onup = this.onup.bind(this);
+				this.dragging = false;
+				this.isTrueDrag = false;
 		}
 
 		bind() {
@@ -42,40 +44,76 @@ export class DragListener {
 				return pt;
 		}
 
+		verifyEvent (event) {
+				return event.target == this.target;
+		}
+
 		ondown (event) {
-				if (event.button != null && event.button != 0) {
+				this.isTrueDrag = false;
+				if (!this.verifyEvent(event) || (event.button != null && event.button != 0)) {
+						this.dragging = false;
+						this.downpoint = null;
 						return;
 				}
-				event.preventDefault();
-				event.stopPropagation();
 				const pt = this.pointFromEvent(event);
 				this.prev = pt;
 				this.downpoint = pt;
-				this.listener.ondown(pt);
+
+				if (this.listener.focus == null) {
+						this.dragging = false;
+						return;
+				}
+				this.dragging = this.listener.ondown(pt);
+				if (this.dragging) {
+						event.preventDefault();
+						event.stopPropagation();
+				}
 		}
 
 		onmove (event) {
 				if (this.downpoint == null) {
 						return;
 				}
-				event.preventDefault();
-				event.stopPropagation();
 				const pt = this.pointFromEvent(event, this.downpoint);
-				this.prev = pt;
 				const diff = pt.subtract(this.downpoint);
-				this.listener.onmove(pt, diff);
-		}
-
-		onup (event) {
-				if (this.prev == null) {
+				if (!this.dragging) {
+						if (!pt.equals(this.downpoint)) {
+								this.isTrueDrag = true;
+						}
 						return;
 				}
 				event.preventDefault();
 				event.stopPropagation();
+				this.prev = pt;
+				this.listener.onmove(pt, diff);
+		}
+
+		onup (event) {
+				if (this.prev == null || this.downpoint == null) {
+						return;
+				}
 				const pt = this.prev;
 				const diff = pt.subtract(this.downpoint);
+				if (!this.dragging) {
+						if (!this.isTrueDrag) {
+								event.preventDefault();
+								event.stopPropagation();
+								this.listener.ondown(this.downpoint);
+								this.listener.onmove(pt, diff);
+								this.listener.onup(pt, diff, !pt.equals(this.downpoint));
+						}
+						this.downpoint = null;
+						this.prev = null;
+						this.dragging = false;
+						this.isTrueDrag = false;
+						return;
+				}
+
+				event.preventDefault();
+				event.stopPropagation();
 				this.listener.onup(pt, diff, !pt.equals(this.downpoint));
 				this.downpoint = null;
+				this.dragging = false;
 				this.prev = null;
 		}
 

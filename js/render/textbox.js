@@ -17,10 +17,12 @@ export class TextBox {
     }
 
 		moveTo(point) {
-				this.x = point.x;
-				this.y = point.y;
-				this.box.x = point.x;
-				this.box.y = point.y;
+				const x = Math.floor(point.x);
+				const y = Math.floor(point.y);
+				this.x = x;
+				this.y = y;
+				this.box.x = x;
+				this.box.y = y;
 		}
 
 		point() {

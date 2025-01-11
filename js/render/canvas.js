@@ -5,6 +5,7 @@ window.IS_HIGH_DEF = ((window.matchMedia && (window.matchMedia('only screen and 
 export class DrawingCanvas {
     constructor(){
 				this.canvas = document.createElement("canvas");
+				this.canvas.classList.add("render-canvas");
 				this.ctx = this.canvas.getContext("2d");
 				this.textBoxes = [];
 				this.background = null;
@@ -99,7 +100,9 @@ export class DrawingCanvas {
 
 export function createMainCanvas(targetElement) {
 		const canvas = new DrawingCanvas();
-		targetElement.appendChild(canvas.canvas);
+		const canvasParent = targetElement.getElementsByClassName("canvas-parent")[0];
+		const canvasReplacementSpot = canvasParent.getElementsByClassName("canvas-spot")[0];
+		canvasParent.replaceChild(canvas.canvas, canvasReplacementSpot);
 		canvas.resizeToElement(targetElement);
 		return canvas;
 }

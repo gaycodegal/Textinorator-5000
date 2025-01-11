@@ -82,7 +82,7 @@ export class Screen {
 				this.startedWithFocus = false;
 				if (this.focus != null && this.focus.text.trim() == "") {
 						this.deleteFocusedText();
-						return;
+						return true; // we're doing work; not an idle drag
 				}
 
 				if (this.focus != null) {
@@ -90,7 +90,7 @@ export class Screen {
 				}
 				if (this.dragForwardListener != null) {
 						this.dragForwardListener.ondown(pt);
-						return;
+						return true; // we're doing work; not an idle drag
 				}
 				
 				const box = this.findClickedTextbox(pt) || this.focus;
@@ -100,7 +100,10 @@ export class Screen {
 						box.drawControls(this.canvas);
 						this.downpoint = box.point();
 						this.focus = box;
+						return true; // we're doing work; not an idle drag
 				}
+
+				return false; // we didn't click on anything
 		}
 		onmove(pt, moveOffset) {
 				if (this.dragForwardListener != null) {
@@ -148,6 +151,7 @@ export class Screen {
 				const focusedTextValue = this.getFocusedText();
 				if (this.textSetter.value != focusedTextValue) {
 						this.textSetter.value = focusedTextValue;
+						this.textSetter.blur();
 				}
 		}
 
