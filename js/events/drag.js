@@ -10,16 +10,17 @@ export class DragListener {
 				this.ondown = this.ondown.bind(this);
 				this.onmove = this.onmove.bind(this);
 				this.onup = this.onup.bind(this);
+				this.dragging = false;
 		}
 
 		bind() {
 				const target = this.target;
-				window.addEventListener("touchstart", this.ondown);
-				window.addEventListener("mousedown", this.ondown);
-				window.addEventListener("touchmove", this.onmove);
-				window.addEventListener("mousemove", this.onmove);
-				window.addEventListener("touchend", this.onup);
-				window.addEventListener("mouseup", this.onup);
+				target.addEventListener("touchstart", this.ondown);
+				target.addEventListener("mousedown", this.ondown);
+				target.addEventListener("touchmove", this.onmove);
+				target.addEventListener("mousemove", this.onmove);
+				target.addEventListener("touchend", this.onup);
+				target.addEventListener("mouseup", this.onup);
 		}
 
 		unbind() {
@@ -48,9 +49,11 @@ export class DragListener {
 
 		ondown (event) {
 				if (!this.verifyEvent(event) || (event.button != null && event.button != 0)) {
+						this.dragging = false;
 						this.downpoint = null;
 						return;
 				}
+				this.dragging = true;
 				event.preventDefault();
 				event.stopPropagation();
 				const pt = this.pointFromEvent(event);
@@ -60,7 +63,7 @@ export class DragListener {
 		}
 
 		onmove (event) {
-				if (this.downpoint == null) {
+				if (!this.dragging || this.downpoint == null) {
 						return;
 				}
 				event.preventDefault();
@@ -72,9 +75,10 @@ export class DragListener {
 		}
 
 		onup (event) {
-				if (this.prev == null || this.downpoint == null) {
+				if (!this.dragging || this.prev == null || this.downpoint == null) {
 						return;
 				}
+				this.dragging = false;
 				event.preventDefault();
 				event.stopPropagation();
 				const pt = this.prev;
