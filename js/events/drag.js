@@ -61,7 +61,6 @@ export class DragListener {
 						event.preventDefault();
 						event.stopPropagation();
 				}
-				console.log(this.dragging);
 		}
 
 		onmove (event) {
