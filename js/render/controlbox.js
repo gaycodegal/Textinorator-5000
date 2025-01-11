@@ -6,6 +6,9 @@ function drawRectPoint(canvas, x, y) {
 export function drawControls(canvas, box) {
 		const ctx = canvas.ctx;
 		ctx.strokeStyle="blue";
+		ctx.lineWidth=4.0;
+		ctx.strokeRect(box.x, box.y, box.width, box.height);
+		ctx.strokeStyle="white";
 		ctx.lineWidth=2.0;
 		ctx.strokeRect(box.x, box.y, box.width, box.height);
 		ctx.fillStyle="red";
