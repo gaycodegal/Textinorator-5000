@@ -32,3 +32,12 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - Click and drag on a corner of focused text to resize it
 - Click on anything that isn't text and type your text in the input
   to add a new text line to the screen.
+
+
+## TODO
+
+- Initial size images to the width of the screen
+- Pull out state / config into a reactive store pattern
+- perhaps edit text as a text area that shows up as needed - even style the
+  text area's text like the canvas font/fill/
+- Change the `bottom:` property of the canvas area to not extend into the tool psettings panel; unfloat the tool settings panel
