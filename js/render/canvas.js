@@ -10,7 +10,7 @@ export class DrawingCanvas {
 				this.scale.bindListener(this.changeScale.bind(this));
 				this.size = atom({width: 1, height: 1});
 				this.size.bindListener(this.changeSize.bind(this));
-
+				this.shouldExpandImageToScreenWidth = atom(true);
 				
 				this.canvas = document.createElement("canvas");
 				this.canvas.classList.add("render-canvas");
@@ -93,10 +93,16 @@ export class DrawingCanvas {
 		setBackground(img) {
 				this.background = img;
 				this.resize(img.width, img.height);
+				if (this.shouldExpandImageToScreenWidth.get()) {
+						this.scale.set(determineScale(img.width, window.innerWidth));
+				}
 		}
 }
 
 
+function determineScale(width, maxWidth) {
+		return width / maxWidth;
+}
 
 
 

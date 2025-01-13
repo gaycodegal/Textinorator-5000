@@ -1,5 +1,5 @@
 function drawRectPoint(canvas, x, y) {
-		const scaled = canvas.scale.get() * 2;
+		const scaled = Math.max(canvas.scale.get() * 2, 4);
 		canvas.ctx.fillRect(x-scaled, y-scaled, scaled*2,scaled*2);
 }
 

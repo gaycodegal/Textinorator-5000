@@ -54,7 +54,8 @@ export class Screen {
 				} else if (this.lastPoint != null && text != "") {
 						this.focus = canvas.strokeText(
 								text,
-								this.lastPoint.x, this.lastPoint.y,
+								Math.floor(this.lastPoint.x),
+								Math.floor(this.lastPoint.y),
 								10, 100,
 								"sans-serif", "white", "black");
 				}
