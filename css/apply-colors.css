@@ -1,0 +1,26 @@
+body {
+		background: var(--color-main-bg);
+		color: var(--color-main-fg);
+		border-color: var(--color-main-border);
+}
+
+button {
+		background: var(--color-button-bg);
+		color: var(--color-button-fg);
+		padding: 5px;
+		border: solid;
+		border-size: 0px;
+		border-radius: 5px;
+		border-color: var(--color-button-border);
+		cursor: pointer;
+}
+
+a:visited {
+    background: var(--color-link-visited-bg);
+    color: var(--color-link-visited-fg);
+}
+
+a {
+    background: var(--color-link-bg);
+    color: var(--color-link-fg);
+}
