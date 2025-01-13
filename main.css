@@ -2,6 +2,14 @@ body,
 html {
     margin: 0px;
 }
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	flex-direction: column;
+}
+
 .render-canvas {
 		image-rendering: pixelated;
 		padding: 0px;
