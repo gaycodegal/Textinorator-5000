@@ -10,7 +10,8 @@ html {
 		display: block;
 }
 
-.controls-layout {
+.general-controls {
+		padding: 10px;
 }
 
 .spacer-for-controls {
