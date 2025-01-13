@@ -30,6 +30,8 @@ export class BoxDragHandler {
 				} else {
 						nextBox.width += amountToAdd * ratioX;
 				}
+				nextBox.width = Math.round(nextBox.width);
+				nextBox.height = Math.round(nextBox.height);
 				return nextBox;
 		}
 		

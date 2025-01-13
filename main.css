@@ -11,7 +11,6 @@ html {
 }
 
 .controls-layout {
-		pointer-events: none;
 }
 
 .spacer-for-controls {
@@ -21,14 +20,20 @@ html {
 }
 
 .tool-controls {
-		pointer-events: auto;
-		background: rgba(255,255,255, 0.5);
 		padding: 10px 10px 0 10px;
-		border-radius: 15px 15px 0 0;
 		display: inline-block;
 		margin: auto;
-		max-width: 300px;
-		max-height: 100px;
+		min-height: calc(100px - 10px);
+}
+
+.tool-controls-container {
+		display: flex;
+		border: solid;
+		border-color: black;
+		border-width: 2px 0 2px 0;
+		background: white;
+		min-height: 100px;
+		width: 100%;
 }
 
 .tool-controls label {
@@ -56,21 +61,11 @@ html {
 		margin: 0px;
 }
 
-.full-screen {
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		bottom: 0px;
-		right: 0px;
+.full-screen-sans-controls {
+		width: 100%;
+		height: calc(100% - 100px);
 		padding: 0px;
 		margin: 0px;
-}
-
-.full-screen-snap-bottom {
-		position: absolute;
-		left: 0px;
-		bottom: 0px;
-		right: 0px;
 }
 
 .noselect {

@@ -38,4 +38,4 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 
 - perhaps edit text as a text area that shows up as needed - even style the
   text area's text like the canvas font/fill/
-- Change the `bottom:` property of the canvas area to not extend into the tool psettings panel; unfloat the tool settings panel
+
