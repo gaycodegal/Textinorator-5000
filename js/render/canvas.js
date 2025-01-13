@@ -40,15 +40,15 @@ export class DrawingCanvas {
 		resizeToScreen() {
 				this.state.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
 				const scale = this.state.scale.get();
-				this.resize(window.innerWidth * scale,
-										window.innerHeight * scale);
+				this.resize(Math.floor(window.innerWidth * scale),
+										Math.floor(window.innerHeight * scale - 1));
 		}
 
 		resizeToElement(element) {
 				this.state.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
 				const scale = this.state.scale.get();
-				this.resize(element.clientWidth * scale,
-										element.clientHeight * scale);
+				this.resize(Math.floor(element.clientWidth * scale),
+										Math.floor(element.clientHeight * scale - 1));
 		}
 
 		resize(width, height) {
