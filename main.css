@@ -1,12 +1,19 @@
 body,
 html {
     margin: 0px;
-    height: 100%;
 }
 .render-canvas {
 		image-rendering: pixelated;
 		padding: 0px;
 		margin: 0px;
+		display: block;
+}
+
+main {
+		display: block;
+}
+
+footer {
 		display: block;
 }
 
@@ -30,15 +37,12 @@ html {
 .tool-controls-container {
 		display: flex;
 		border: solid;
-		border-color: black;
 		border-width: 2px 0 2px 0;
-		background: white;
 		min-height: 100px;
 		width: 100%;
 }
 
 .tool-controls label {
-		background: white;
 }
 
 .canvas-scrollable{
@@ -64,7 +68,7 @@ html {
 
 .full-screen-sans-controls {
 		width: 100%;
-		height: calc(100% - 100px);
+		height: calc(100vh - 100px);
 		padding: 0px;
 		margin: 0px;
 }

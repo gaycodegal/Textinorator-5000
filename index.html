@@ -1,26 +1,28 @@
 <!doctype html>
-<html>
-
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport"  content="width=device-width initial-scale=1.0">
 		<title>Textinorator 5000</title>
 		<link rel="stylesheet" href="./main.css"></link>
+		<link rel="stylesheet" href="./css/colors.css"></link>
+		<link rel="stylesheet" href="./css/apply-colors.css"></link>
 		<link rel="icon" type="image/png" href="icon.png">
+    <script src="./js/dark-mode.js"></script>
 	</head>
 
 	<body>
-		<script src="./js/init-module.js"></script>
-		<div id="container" class="container full-screen-sans-controls">
-			<div class="canvas-scrollable">
-				<div class="canvas-parent">
-					<div class="horizontal-spacer"></div>
-					<div class="canvas-spot"></div>
-					<div class="horizontal-spacer"></div>
+		<main>
+			<script src="./js/init-module.js"></script>
+			<div id="container" class="container full-screen-sans-controls">
+				<div class="canvas-scrollable">
+					<div class="canvas-parent">
+						<div class="horizontal-spacer"></div>
+						<div class="canvas-spot"></div>
+						<div class="horizontal-spacer"></div>
+					</div>
 				</div>
 			</div>
-		</div>
 			<div class="tool-controls-container">
 				<div class="horizontal-spacer"></div>
 				<div id="tool-controls" class="tool-controls full-screen-snap-bottom">
@@ -42,6 +44,11 @@
 				
 				<button class="download-image">Download Image</button>
 			</div>
+		</main>
+		<footer>
+      <a href="./html/license.html">license</a>
+      <button id="dark-toggle" onclick="toggleDarkmode()">toggle darkmode</button>
+    </footer>
 	</body>
 
 </html>
