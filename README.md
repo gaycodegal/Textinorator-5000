@@ -38,4 +38,11 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 
 - perhaps edit text as a text area that shows up as needed - even style the
   text area's text like the canvas font/fill/
-
+- center the canvas vertically
+- optional safety margin, so its easier to draw when at the size of the screen
+- optional snap text to screen borders
+- darkmode
+- controlbox looks weird when canvas.scale is large due to pixel-fixed rectangle; improve this
+- set default font
+- maybe add the option for text shadow?
+- an options page
