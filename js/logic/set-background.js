@@ -1,5 +1,20 @@
 
 
+export function setUpTextChangeEvents(screen, controls) {
+		const textSetter = controls.getElementsByClassName("text-setter")[0];
+		function setFocusedTextFromSetter() {
+				screen.focusedText.set(textSetter.value);
+		}
+		screen.focusedText.bindListener((text)=>{
+				if (textSetter.value != text) {
+						textSetter.value = text;
+						textSetter.blur();
+				}
+		});
+		textSetter.addEventListener("change", setFocusedTextFromSetter);
+		textSetter.addEventListener("keyup", setFocusedTextFromSetter);
+}
+
 export function setUpDeleteTextEvent(screen, controls) {
 		const deleteTextButton = controls.getElementsByClassName("delete-text")[0];
 		deleteTextButton.addEventListener('click', screen.deleteFocusedText.bind(screen));

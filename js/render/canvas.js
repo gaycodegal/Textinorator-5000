@@ -1,9 +1,17 @@
 import {TextBox} from "./textbox.js";
+import {atom} from "../state/atom.js";
 
 window.IS_HIGH_DEF = ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
 
 export class DrawingCanvas {
     constructor(){
+				// live state
+				this.scale = atom(1);
+				this.scale.bindListener(this.changeScale.bind(this));
+				this.size = atom({width: 1, height: 1});
+				this.size.bindListener(this.changeSize.bind(this));
+
+				
 				this.canvas = document.createElement("canvas");
 				this.canvas.classList.add("render-canvas");
 				this.ctx = this.canvas.getContext("2d");
@@ -11,46 +19,39 @@ export class DrawingCanvas {
 				this.background = null;
     }
 
-		resizeToScreen() {
-				if (window.IS_HIGH_DEF) {
-						this.scale = 2;
-						// can't use ctx.scale and have emoji work :(
-						//this.ctx.scale(2,2);
-				}
-				this.resize(window.innerWidth * this.scale, window.innerHeight * this.scale);
+		changeScale(scale){
+				const {width, height} = this.size.get();
+				this.canvas.style.width = `${width/scale}px`;
+				this.canvas.style.height = `${height/scale}px`;
 		}
 
-		resizeToElement(element) {
-				if (window.IS_HIGH_DEF) {
-						this.scale = 2;
-						// can't use ctx.scale and have emoji work :(
-						//this.ctx.scale(2,2);
-				}
-
-				this.resize(element.clientWidth * this.scale, (element.clientHeight) * this.scale);
-		}
-
-		resize(w, h) {
-				if (window.IS_HIGH_DEF) {
-						this.scale = 2;
-						// can't use ctx.scale and have emoji work :(
-						//this.ctx.scale(2,2);
-				}
-				if (window.IS_HIGH_DEF) {
-						this.canvas.width = w;
-						this.canvas.height = h;
-				} else {
-						this.canvas.width = w;
-						this.canvas.height = h;
-				}
-				this.canvas.style.width = `${w/this.scale}px`;
-				this.canvas.style.height = `${h/this.scale}px`;
-				this.width = w;
-				this.height = h;
+		changeSize({width, height}) {
+				this.canvas.width = width;
+				this.canvas.height = height;
+				this.scale.notifyListeners();
 				this.smoothIt(true);
 				this.ctx.lineCap = "round";
 				this.ctx.lineJoin = "round";
 				this.repaint();
+		} 
+
+		resizeToScreen() {
+				this.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
+				const scale = this.scale.get();
+				this.resize(window.innerWidth * scale,
+										window.innerHeight * scale);
+		}
+
+		resizeToElement(element) {
+				this.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
+				const scale = this.scale.get();
+				this.resize(element.clientWidth * scale,
+										element.clientHeight * scale);
+		}
+
+		resize(width, height) {
+				this.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
+				this.size.set({width, height});
 		}
 
 		calculateTextbox(text, x, y, lineWidth, fontSize, fontFamily, fg, bg) {
@@ -65,7 +66,8 @@ export class DrawingCanvas {
 		}
 
 		clear() {
-				this.ctx.clearRect(0,0, this.width, this.height);
+				const {width, height} = this.size.get();
+				this.ctx.clearRect(0,0, width, height);
 				if(this.background != null) {
 						this.ctx.drawImage(this.background, 0, 0)
 				}

@@ -1,20 +1,23 @@
 import {DragListener} from "../events/drag.js";
 import {Point} from "../math/point.js";
+import {atom} from "../state/atom.js";
 
 export class Screen {
-		constructor(canvas, snapRadius, clickRadius, textSetter){
+		constructor(canvas, snapRadius, clickRadius){
+				// live state
+				this.focusedText = atom("");
+				this.focusedText.bindListener(this.setFocusedText.bind(this));
+
+				
 				this.canvas = canvas;
 				this.snapRadius = snapRadius;
 				this.clickRadius = clickRadius;
-				this.textSetter = textSetter;
 				this.dragListen = new DragListener(canvas.canvas, canvas.scale, this.snapRadius, this);
 				this.dragListen.bind();
 				this.downpoint = null;
 				this.dragForwardListener = null;
 				this.startedWithFocus = false;
 				this.lastPoint = null;
-				this.textSetter.addEventListener("change", this.setFocusedTextFromSetter.bind(this));
-				this.textSetter.addEventListener("keyup", this.setFocusedTextFromSetter.bind(this));
 		}
 
 		deleteFocusedText() {
@@ -48,7 +51,7 @@ export class Screen {
 						this.focus.retext(this.canvas.ctx, text);
 						this.canvas.repaint();
 						this.focus.drawControls(this.canvas);
-				} else if (this.lastPoint != null) {
+				} else if (this.lastPoint != null && text != "") {
 						this.focus = canvas.strokeText(
 								text,
 								this.lastPoint.x, this.lastPoint.y,
@@ -86,7 +89,7 @@ export class Screen {
 				}
 
 				if (this.focus != null) {
-						this.dragForwardListener = this.focus.getListenerForPoint(this.canvas, pt, this.clickRadius * canvas.scale);
+						this.dragForwardListener = this.focus.getListenerForPoint(this.canvas, pt, this.clickRadius * canvas.scale.get());
 				}
 				if (this.dragForwardListener != null) {
 						this.dragForwardListener.ondown(pt);
@@ -149,10 +152,7 @@ export class Screen {
 						this.focus.drawControls(this.canvas);
 				}
 				const focusedTextValue = this.getFocusedText();
-				if (this.textSetter.value != focusedTextValue) {
-						this.textSetter.value = focusedTextValue;
-						this.textSetter.blur();
-				}
+				this.focusedText.set(focusedTextValue);
 		}
 
 }

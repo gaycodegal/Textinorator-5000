@@ -37,8 +37,9 @@ export class DragListener {
 		pointFromEvent(event, downpoint = null) {
 				const rect = this.target.getBoundingClientRect();
 				const offset = new Point(rect.left,rect.top);
-				const pt = Point.fromEvent(event, this.prev).subtract(offset).scale(this.scale);
-				if (downpoint && pt.manhatten(downpoint) < this.deadzone * this.scale) {
+				const scale = this.scale.get();
+				const pt = Point.fromEvent(event, this.prev).subtract(offset).scale(scale);
+				if (downpoint && pt.manhatten(downpoint) < this.deadzone * scale) {
 						return downpoint;
 				}
 				return pt;
