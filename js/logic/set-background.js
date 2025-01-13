@@ -3,9 +3,9 @@
 export function setUpTextChangeEvents(screen, controls) {
 		const textSetter = controls.getElementsByClassName("text-setter")[0];
 		function setFocusedTextFromSetter() {
-				screen.focusedText.set(textSetter.value);
+				screen.state.focusedText.set(textSetter.value);
 		}
-		screen.focusedText.bindListener((text)=>{
+		screen.state.focusedText.bindListener((text)=>{
 				if (textSetter.value != text) {
 						textSetter.value = text;
 						textSetter.blur();

@@ -1,8 +1,7 @@
 let listenerId = 0;
 
-export function atom(value = {}, methods = {}) {
+export function atom(value = {}) {
 		const instance = new StatefulAtom(value);
-		Object.assign(instance, methods);
 		return instance;
 }
 

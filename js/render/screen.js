@@ -5,14 +5,16 @@ import {atom} from "../state/atom.js";
 export class Screen {
 		constructor(canvas, snapRadius, clickRadius){
 				// live state
-				this.focusedText = atom("");
-				this.focusedText.bindListener(this.setFocusedText.bind(this));
+				const state = {};
+				this.state = state;
+				state.focusedText = atom("");
+				state.focusedText.bindListener(this.setFocusedText.bind(this));
 
 				
 				this.canvas = canvas;
 				this.snapRadius = snapRadius;
 				this.clickRadius = clickRadius;
-				this.dragListen = new DragListener(canvas.canvas, canvas.scale, this.snapRadius, this);
+				this.dragListen = new DragListener(canvas.canvas, canvas.state.scale, this.snapRadius, this);
 				this.dragListen.bind();
 				this.downpoint = null;
 				this.dragForwardListener = null;
@@ -37,10 +39,6 @@ export class Screen {
 				if (this.focus != null) {
 						this.focus.drawControls(this.canvas);
 				}
-		}
-
-		setFocusedTextFromSetter() {
-				this.setFocusedText(this.textSetter.value);
 		}
 
 		setFocusedText(text) {
@@ -90,7 +88,7 @@ export class Screen {
 				}
 
 				if (this.focus != null) {
-						this.dragForwardListener = this.focus.getListenerForPoint(this.canvas, pt, this.clickRadius * canvas.scale.get());
+						this.dragForwardListener = this.focus.getListenerForPoint(this.canvas, pt, this.clickRadius * canvas.state.scale.get());
 				}
 				if (this.dragForwardListener != null) {
 						this.dragForwardListener.ondown(pt);
@@ -153,7 +151,7 @@ export class Screen {
 						this.focus.drawControls(this.canvas);
 				}
 				const focusedTextValue = this.getFocusedText();
-				this.focusedText.set(focusedTextValue);
+				this.state.focusedText.set(focusedTextValue);
 		}
 
 }

@@ -6,11 +6,13 @@ window.IS_HIGH_DEF = ((window.matchMedia && (window.matchMedia('only screen and 
 export class DrawingCanvas {
     constructor(){
 				// live state
-				this.scale = atom(1);
-				this.scale.bindListener(this.changeScale.bind(this));
-				this.size = atom({width: 1, height: 1});
-				this.size.bindListener(this.changeSize.bind(this));
-				this.shouldExpandImageToScreenWidth = atom(true);
+				const state = {};
+				this.state = state;
+				state.scale = atom(1);
+				state.scale.bindListener(this.changeScale.bind(this));
+				state.size = atom({width: 1, height: 1});
+				state.size.bindListener(this.changeSize.bind(this));
+				state.shouldExpandImageToScreenWidth = atom(true);
 				
 				this.canvas = document.createElement("canvas");
 				this.canvas.classList.add("render-canvas");
@@ -20,7 +22,7 @@ export class DrawingCanvas {
     }
 
 		changeScale(scale){
-				const {width, height} = this.size.get();
+				const {width, height} = this.state.size.get();
 				this.canvas.style.width = `${width/scale}px`;
 				this.canvas.style.height = `${height/scale}px`;
 		}
@@ -28,7 +30,7 @@ export class DrawingCanvas {
 		changeSize({width, height}) {
 				this.canvas.width = width;
 				this.canvas.height = height;
-				this.scale.notifyListeners();
+				this.state.scale.notifyListeners();
 				this.smoothIt(true);
 				this.ctx.lineCap = "round";
 				this.ctx.lineJoin = "round";
@@ -36,22 +38,22 @@ export class DrawingCanvas {
 		} 
 
 		resizeToScreen() {
-				this.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
-				const scale = this.scale.get();
+				this.state.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
+				const scale = this.state.scale.get();
 				this.resize(window.innerWidth * scale,
 										window.innerHeight * scale);
 		}
 
 		resizeToElement(element) {
-				this.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
-				const scale = this.scale.get();
+				this.state.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
+				const scale = this.state.scale.get();
 				this.resize(element.clientWidth * scale,
 										element.clientHeight * scale);
 		}
 
 		resize(width, height) {
-				this.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
-				this.size.set({width, height});
+				this.state.scale.set(window.IS_HIGH_DEF ? 2: 1, false);
+				this.state.size.set({width, height});
 		}
 
 		calculateTextbox(text, x, y, lineWidth, fontSize, fontFamily, fg, bg) {
@@ -66,7 +68,7 @@ export class DrawingCanvas {
 		}
 
 		clear() {
-				const {width, height} = this.size.get();
+				const {width, height} = this.state.size.get();
 				this.ctx.clearRect(0,0, width, height);
 				if(this.background != null) {
 						this.ctx.drawImage(this.background, 0, 0)
@@ -93,8 +95,8 @@ export class DrawingCanvas {
 		setBackground(img) {
 				this.background = img;
 				this.resize(img.width, img.height);
-				if (this.shouldExpandImageToScreenWidth.get()) {
-						this.scale.set(determineScale(img.width, window.innerWidth));
+				if (this.state.shouldExpandImageToScreenWidth.get()) {
+						this.state.scale.set(determineScale(img.width, window.innerWidth));
 				}
 		}
 }
