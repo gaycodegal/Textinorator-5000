@@ -6,4 +6,7 @@ return {
 	 {"--color-link-visited-fg", "#FFA500"},
 	 {"--color-link-bg", "--color-main-bg"},
 	 {"--color-link-fg", "#A3A3FF"},
+	 {"--color-button-bg", "#fff"},
+	 {"--color-button-fg", "#000"},
+	 {"--color-button-border", "#000"},
 }
