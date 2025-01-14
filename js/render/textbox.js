@@ -37,6 +37,26 @@ export class TextBox {
 
 		retext(ctx, text) {
 				this.text = text;
+				this.resize(ctx);
+		}
+
+		setColor(ctx, color) {
+				const lineWidthOld = this.lineWidth;
+				this.color = color;
+				if (this.lineWidth != lineWidthOld) {
+						this.resize(ctx);
+				}
+		}
+
+		setFontSize (ctx, fontSize) {
+				if (this.fontSize == fontSize) {
+						return;
+				}
+				this.fontSize = fontSize;
+				this.resize(ctx);
+		}
+
+		resize(ctx) {
 				this.box = this.calculateSize(ctx, this.text, this.x, this.y, this.lineWidth);
 		}
 
@@ -46,7 +66,7 @@ export class TextBox {
 				const thisTrueWidth = this.box.width - this.lineWidth;
 				const nextTrueWidth = box.width - this.lineWidth;
 				this.fontSize = this.fontSize * nextTrueWidth / thisTrueWidth;
-				this.box = this.calculateSize(canvas.ctx, this.text, this.x, this.y, this.lineWidth);
+				this.resize(canvas.ctx);
 		}
 		
 		points() {

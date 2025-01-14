@@ -1,6 +1,6 @@
 import * as DrawingCanvas from "./render/canvas.js";
 import {Screen} from "./render/screen.js";
-import {setUpTextChangeEvents, setUpBackgroundSetter, setUpDeleteTextEvent, setUpDownloadButton} from "./logic/set-background.js";
+import {setUpFontSizeEvents, setUpTextChangeEvents, setUpBackgroundSetter, setUpDeleteTextEvent, setUpDownloadButton} from "./logic/set-background.js";
 import {setUpColorChooser} from "./logic/color-chooser.js";
 
 export function main() {
@@ -16,6 +16,7 @@ export function main() {
 				/* snap deadzone */ 5,
 				/* handle drag click zone */ 30);
 		window.screen = screen;
+		setUpFontSizeEvents(screen, toolControlsElement);
 		setUpTextChangeEvents(screen, toolControlsElement);
 		setUpDeleteTextEvent(screen, toolControlsElement);
 		setUpColorChooser(screen, toolControlsElement);

@@ -2,6 +2,7 @@ import {DragListener} from "../events/drag.js";
 import {Point} from "../math/point.js";
 import {TextBox} from "./textbox.js";
 import {atom} from "../state/atom.js";
+import {colors, cloneColor} from "../logic/colors.js";
 
 export class Screen {
 		constructor(canvas, snapRadius, clickRadius){
@@ -10,7 +11,9 @@ export class Screen {
 				this.state = state;
 				state.focusedText = atom("");
 				state.focusedText.bindListener(this.setFocusedText.bind(this));
-				state.focusedColor = atom({fill:"white", stroke:"black", strokeWidth: 10});
+				state.focusedTextSize = atom(100);
+				state.focusedTextSize.bindListener(this.setFocusedTextSize.bind(this));
+				state.focusedColor = atom(colors[0]);
 				state.focusedColor.bindListener(this.setFocusedColor.bind(this));
 
 				
@@ -25,9 +28,16 @@ export class Screen {
 				this.lastPoint = null;
 		}
 
+		setFocusedTextSize(size) {
+				if (this.focus != null && size != this.focus.fontSize) {
+						this.focus.setFontSize(this.canvas.ctx, size);
+						this.repaint();
+				}
+		}
+
 		setFocusedColor(color) {
 				if (this.focus != null) {
-						this.focus.color = color;
+						this.focus.setColor(this.canvas.ctx, cloneColor(color));
 				}
 				this.repaint();
 		}
@@ -53,7 +63,7 @@ export class Screen {
 				}
 				this.canvas.textBoxes.splice(indexToRemove, 1);
 				if (this.focus == box) {
-						this.focus = null;
+						this.setFocus(null);
 				}
 				this.repaint();
 		}
@@ -73,18 +83,43 @@ export class Screen {
 						this.focus.retext(this.canvas.ctx, text);
 						this.repaint();
 				} else if (this.lastPoint != null && text != "") {
-						this.focus = this.strokeText(
+						this.setFocus(this.strokeText(
 								text,
 								Math.floor(this.lastPoint.x),
 								Math.floor(this.lastPoint.y),
-								10, 100,
-								"sans-serif");
+								10, this.state.focusedTextSize.get(),
+								"sans-serif"));
 				}
 		}
 
-		getFocusedText() {
+		setFocus(focus, repaint = true) {
+				this.focus = focus;
+				const focusedTextValue = this.getFocusedText(focus);
+				this.state.focusedText.set(focusedTextValue);
+				this.refreshFontSize();
+				if (repaint) {
+						this.repaint();
+				}
+		}
+
+		refreshFontSize() {
 				if (this.focus != null) {
-						return this.focus.text;
+						const textSize = this.getFocusedTextSize(this.focus);
+						this.state.focusedTextSize.set(textSize);
+				}
+		}
+
+		getFocusedText(focus) {
+				if (focus != null) {
+						return focus.text;
+				} else {
+						return "";
+				}
+		}
+
+		getFocusedTextSize(focus) {
+				if (focus != null) {
+						return focus.fontSize;
 				} else {
 						return "";
 				}
@@ -122,8 +157,7 @@ export class Screen {
 				this.startedWithFocus = this.focus == box;
 				if (box) {
 						this.downpoint = box.point();
-						this.focus = box;
-						this.repaint();
+						this.setFocus(box);
 						return true; // we're doing work; not an idle drag
 				}
 
@@ -147,10 +181,12 @@ export class Screen {
 				if (this.dragForwardListener != null) {
 						this.dragForwardListener.onup(pt, moveOffset, moved);
 						this.dragForwardListener = null;
+						this.refreshFontSize();
 						return;
 				}
 				if (lastFocus != null && lastFocus.text.trim() == "") {
 						this.deleteTextBox(lastFocus);
+						this.refreshFontSize();
 						return;
 				}
 
@@ -161,14 +197,13 @@ export class Screen {
 						}
 				} else {
 						if (this.focus != null && this.startedWithFocus) {
-								this.focus = null;
+								this.setFocus(null, false);
 								this.startedWithFocus = false;
 						}
 				}
+				this.refreshFontSize();
 				this.repaint();
 
-				const focusedTextValue = this.getFocusedText();
-				this.state.focusedText.set(focusedTextValue);
 		}
 
 }

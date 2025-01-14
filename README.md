@@ -12,12 +12,12 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - Support emoji + non-ascii characters [complete]
   - This depends on your browser, but most should do it
 - Stroke style, color, size
-- Color
+- Color [50%]
 - Background [complete]
 - Rotation
 - Scale [complete]
 - Move / edit / add text [complete]
-- A better UI
+- A better UI [50%]
 - Offline use / install via PWA install/service worker tech.
 - Vertical text support
   - My math on text box bounding size is insufficient for vertical text

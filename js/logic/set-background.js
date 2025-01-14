@@ -1,3 +1,24 @@
+export function setUpFontSizeEvents(screen, controls) {
+		const fontSizeSetter = controls.getElementsByClassName("font-size-setter")[0];
+		function doSetFontSize() {
+				let value = fontSizeSetter.value;
+				if (value < 3) {
+						value = 3;
+				}
+				screen.state.focusedTextSize.set(value);
+		}
+		screen.state.focusedTextSize.bindListener((fontSize)=>{
+				const isFocused = document.activeElement == fontSizeSetter;
+				if (fontSizeSetter.value != fontSize) {
+						fontSizeSetter.value = fontSize;
+						if (!isFocused) {
+								fontSizeSetter.blur();
+						}
+				}
+		});
+		fontSizeSetter.addEventListener("change", doSetFontSize);
+		//textSetter.addEventListener("keyup", setFocusedTextFromSetter);
+}
 
 
 export function setUpTextChangeEvents(screen, controls) {

@@ -1,6 +1,4 @@
-const shadowColors = ["red", "orange", "yellow", "green", "blue", "purple", "black", "white"].map(makeShadowColor);
-const strokedColors = [{fill:"white", stroke:"black", strokeWidth: 10}];
-const colors = strokedColors.concat(shadowColors);
+import {colors} from "./colors.js";
 
 function makeShadowColor(color) {
 		const shadow = color=="black" ? "white" : "black";
