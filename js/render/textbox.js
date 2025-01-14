@@ -4,14 +4,12 @@ import {Point} from "../math/point.js";
 import {Box} from "../math/box.js";
 
 export class TextBox {
-    constructor(ctx, text, x, y, lineWidth, fontSize, fontFamily, fg = "black", bg = "white"){
+    constructor(ctx, text, x, y, lineWidth, fontSize, fontFamily, color){
 				this.fontSize = fontSize;
 				this.fontFamily = fontFamily;
 				this.x = x;
 				this.y = y;
-				this.lineWidth = lineWidth;
-				this.fg = fg;
-				this.bg = bg;
+				this.color = color;
 				this.selected = true;
 				this.retext(ctx, text);
     }
@@ -31,6 +29,10 @@ export class TextBox {
 
 		toBox() {
 				return new Box(this.box.x, this.box.y, this.box.width, this.box.height);
+		}
+
+		get lineWidth() {
+				return this.color.strokeWidth ?? 0;
 		}
 
 		retext(ctx, text) {
@@ -99,15 +101,35 @@ export class TextBox {
 				drawControls(canvas, this.box);
 		}
 
+		useContextColor(ctx, fn) {
+				ctx.lineWidth = this.color.strokeWidth;
+				ctx.fillStyle = this.color.fill;
+				ctx.strokeStyle = this.color.stroke;
+				const shadowColor = ctx.shadowColor;
+				const shadowBlur = ctx.shadowBlur;
+				if (this.color.shadow) {
+						ctx.shadowColor = this.color.shadow;
+						ctx.shadowBlur = this.color.shadowBlur;
+				}
+				fn();
+				if (this.color.shadow) {
+						ctx.shadowColor = shadowColor;
+						ctx.shadowBlur = shadowBlur;
+				}
+		}
+
 		draw(canvas) {
 				const ctx = canvas.ctx;
 				const box = this.box;
 				ctx.font = this.font;
-				ctx.lineWidth=this.lineWidth;
-				ctx.fillStyle=this.fg;
-				ctx.strokeStyle=this.bg;
-				ctx.strokeText(this.text, box.x + box.offsetX, box.y + box.offsetY);
-				ctx.fillText(this.text, box.x + box.offsetX, box.y + box.offsetY);
+				const text = this.text;
+				const self = this;
+				this.useContextColor(ctx, ()=>{
+						if (this.lineWidth > 0) {
+								ctx.strokeText(text, box.x + box.offsetX, box.y + box.offsetY);
+						}
+						ctx.fillText(text, box.x + box.offsetX, box.y + box.offsetY);
+				});
 		}
 
 		getListenerForPoint (canvas, point, clickRadius) {

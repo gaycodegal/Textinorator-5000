@@ -60,13 +60,6 @@ export class DrawingCanvas {
 				return new TextBox(this.ctx, text, x, y, lineWidth, fontSize, fontFamily, fg, bg);
 		}
 
-		strokeText(text, x, y, lineWidth, fontSize, fontFamily, fg, bg) {
-				const textbox = new TextBox(this.ctx, text, x, y, lineWidth, fontSize, fontFamily, fg, bg);
-				textbox.draw(this);
-				this.textBoxes.push(textbox);
-				return textbox;
-		}
-
 		clear() {
 				const {width, height} = this.state.size.get();
 				this.ctx.clearRect(0,0, width, height);

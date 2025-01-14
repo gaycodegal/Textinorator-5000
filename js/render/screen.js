@@ -1,5 +1,6 @@
 import {DragListener} from "../events/drag.js";
 import {Point} from "../math/point.js";
+import {TextBox} from "./textbox.js";
 import {atom} from "../state/atom.js";
 
 export class Screen {
@@ -9,6 +10,8 @@ export class Screen {
 				this.state = state;
 				state.focusedText = atom("");
 				state.focusedText.bindListener(this.setFocusedText.bind(this));
+				state.focusedColor = atom({fill:"white", stroke:"black", strokeWidth: 10});
+				state.focusedColor.bindListener(this.setFocusedColor.bind(this));
 
 				
 				this.canvas = canvas;
@@ -20,6 +23,23 @@ export class Screen {
 				this.dragForwardListener = null;
 				this.startedWithFocus = false;
 				this.lastPoint = null;
+		}
+
+		setFocusedColor(color) {
+				if (this.focus != null) {
+						this.focus.color = color;
+				}
+				this.repaint();
+		}
+
+		strokeText(text, x, y, lineWidth, fontSize, fontFamily, color = null) {
+				if (color == null) {
+						color = this.state.focusedColor.get();
+				}
+				const textbox = new TextBox(this.canvas.ctx, text, x, y, lineWidth, fontSize, fontFamily, color);
+				textbox.draw(this.canvas);
+				this.canvas.textBoxes.push(textbox);
+				return textbox;
 		}
 
 		deleteFocusedText() {
@@ -35,6 +55,10 @@ export class Screen {
 				if (this.focus == box) {
 						this.focus = null;
 				}
+				this.repaint();
+		}
+
+		repaint() {
 				this.canvas.repaint();
 				if (this.focus != null) {
 						this.focus.drawControls(this.canvas);
@@ -47,15 +71,14 @@ export class Screen {
 								return;
 						}
 						this.focus.retext(this.canvas.ctx, text);
-						this.canvas.repaint();
-						this.focus.drawControls(this.canvas);
+						this.repaint();
 				} else if (this.lastPoint != null && text != "") {
-						this.focus = canvas.strokeText(
+						this.focus = this.strokeText(
 								text,
 								Math.floor(this.lastPoint.x),
 								Math.floor(this.lastPoint.y),
 								10, 100,
-								"sans-serif", "white", "black");
+								"sans-serif");
 				}
 		}
 
@@ -98,10 +121,9 @@ export class Screen {
 				const box = this.findClickedTextbox(pt) || this.focus;
 				this.startedWithFocus = this.focus == box;
 				if (box) {
-						this.canvas.repaint();
-						box.drawControls(this.canvas);
 						this.downpoint = box.point();
 						this.focus = box;
+						this.repaint();
 						return true; // we're doing work; not an idle drag
 				}
 
@@ -115,8 +137,7 @@ export class Screen {
 
 				if(this.focus) {
 						this.focus.moveTo(this.downpoint.add(moveOffset));
-						this.canvas.repaint();
-						this.focus.drawControls(this.canvas);
+						this.repaint();
 				}
 		}
 
@@ -144,12 +165,8 @@ export class Screen {
 								this.startedWithFocus = false;
 						}
 				}
-				this.canvas.repaint();
+				this.repaint();
 
-				
-				if (this.focus != null) {
-						this.focus.drawControls(this.canvas);
-				}
 				const focusedTextValue = this.getFocusedText();
 				this.state.focusedText.set(focusedTextValue);
 		}

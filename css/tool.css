@@ -1,0 +1,33 @@
+.color-choice {
+		display: flex;
+		gap: 5px;
+		margin: 5px 0;
+}
+
+.color-option {
+		display: inline-block;
+		width: 34px;
+		height: 34px;
+		background: none;
+		border-width: 0px;
+		border-radius: 0px;
+		padding: 0px;
+}
+
+.color-option div {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		border: solid;
+		border-color: var(--color-main-border);
+		border-width: 2px;
+		border-radius: 10px;
+		background: red;
+		pointer-events: none;
+}
+
+.color-option.selected div {
+		width: 30px;
+		height: 30px;
+		border-radius: 30px;
+}
