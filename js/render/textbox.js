@@ -48,6 +48,14 @@ export class TextBox {
 				}
 		}
 
+		setFontName(ctx, name) {
+				if (this.fontFamily == name) {
+						return;
+				}
+				this.fontFamily = name;
+				this.resize(ctx);
+		}
+
 		setFontSize (ctx, fontSize) {
 				if (this.fontSize == fontSize) {
 						return;

@@ -13,6 +13,8 @@ export class Screen {
 				state.focusedText.bindListener(this.setFocusedText.bind(this));
 				state.focusedTextSize = atom(100);
 				state.focusedTextSize.bindListener(this.setFocusedTextSize.bind(this));
+				state.focusedFontName = atom(100);
+				state.focusedFontName.bindListener(this.setFocusedFontName.bind(this));
 				state.focusedColor = atom(colors[0]);
 				state.focusedColor.bindListener(this.setFocusedColor.bind(this));
 
@@ -31,6 +33,13 @@ export class Screen {
 		setFocusedTextSize(size) {
 				if (this.focus != null && size != this.focus.fontSize) {
 						this.focus.setFontSize(this.canvas.ctx, size);
+						this.repaint();
+				}
+		}
+
+		setFocusedFontName(name) {
+				if (this.focus != null && name != this.focus.fontFamily) {
+						this.focus.setFontName(this.canvas.ctx, name);
 						this.repaint();
 				}
 		}
@@ -83,12 +92,14 @@ export class Screen {
 						this.focus.retext(this.canvas.ctx, text);
 						this.repaint();
 				} else if (this.lastPoint != null && text != "") {
+						const fontSize = this.state.focusedTextSize.get();
+						const fontName = this.state.focusedFontName.get();
 						this.setFocus(this.strokeText(
 								text,
 								Math.floor(this.lastPoint.x),
 								Math.floor(this.lastPoint.y),
-								10, this.state.focusedTextSize.get(),
-								"sans-serif"));
+								10, fontSize,
+								fontName));
 				}
 		}
 
@@ -97,6 +108,10 @@ export class Screen {
 				const focusedTextValue = this.getFocusedText(focus);
 				this.state.focusedText.set(focusedTextValue);
 				this.refreshFontSize();
+				if (this.focus != null) {
+						const fontName = this.getFocusedFontName(this.focus);
+						this.state.focusedFontName.set(fontName);
+				}
 				if (repaint) {
 						this.repaint();
 				}
@@ -121,7 +136,15 @@ export class Screen {
 				if (focus != null) {
 						return focus.fontSize;
 				} else {
-						return "";
+						return 100;
+				}
+		}
+
+		getFocusedFontName(focus) {
+				if (focus != null) {
+						return focus.fontFamily;
+				} else {
+						return "sans-serif";
 				}
 		}
 

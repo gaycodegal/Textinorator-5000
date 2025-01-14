@@ -21,6 +21,23 @@ export function setUpFontSizeEvents(screen, controls) {
 }
 
 
+export function setUpFontNameEvents(screen, controls) {
+		const fontNameSetter = controls.getElementsByClassName("font-name-setter")[0];
+		function doSetFontName() {
+				let value = fontNameSetter.value;
+				screen.state.focusedFontName.set(value);
+		}
+		screen.state.focusedFontName.bindListener((name)=>{
+				const isFocused = document.activeElement == fontNameSetter;
+				if (!isFocused && fontNameSetter.value != name) {
+						fontNameSetter.value = name;
+						fontNameSetter.blur();
+				}
+		});
+		fontNameSetter.addEventListener("change", doSetFontName);
+}
+
+
 export function setUpTextChangeEvents(screen, controls) {
 		const textSetter = controls.getElementsByClassName("text-setter")[0];
 		function setFocusedTextFromSetter() {
