@@ -1,13 +1,13 @@
-export function setUpFontSizeEvents(screen, controls) {
+export function setUpFontSizeEvents(focusedTextSizeAtom, controls) {
 		const fontSizeSetter = controls.getElementsByClassName("font-size-setter")[0];
 		function doSetFontSize() {
-				let value = fontSizeSetter.value;
+				let value = Number.parseFloat(fontSizeSetter.value);
 				if (value < 3) {
 						value = 3;
 				}
-				screen.state.focusedTextSize.set(value);
+				focusedTextSizeAtom.set(value);
 		}
-		screen.state.focusedTextSize.bindListener((fontSize)=>{
+		focusedTextSizeAtom.bindListener((fontSize)=>{
 				const isFocused = document.activeElement == fontSizeSetter;
 				if (fontSizeSetter.value != fontSize) {
 						fontSizeSetter.value = fontSize;
@@ -15,7 +15,7 @@ export function setUpFontSizeEvents(screen, controls) {
 								fontSizeSetter.blur();
 						}
 				}
-		});
+		}, true);
 		fontSizeSetter.addEventListener("change", doSetFontSize);
 		//textSetter.addEventListener("keyup", setFocusedTextFromSetter);
 }
@@ -33,7 +33,7 @@ export function setUpFontNameEvents(screen, controls) {
 						fontNameSetter.value = name;
 						fontNameSetter.blur();
 				}
-		});
+		}, true);
 		fontNameSetter.addEventListener("change", doSetFontName);
 }
 

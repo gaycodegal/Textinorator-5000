@@ -13,7 +13,7 @@ export class Screen {
 				state.focusedText.bindListener(this.setFocusedText.bind(this));
 				state.focusedTextSize = atom(100);
 				state.focusedTextSize.bindListener(this.setFocusedTextSize.bind(this));
-				state.focusedFontName = atom(100);
+				state.focusedFontName = atom("sans-serif");
 				state.focusedFontName.bindListener(this.setFocusedFontName.bind(this));
 				state.focusedColor = atom(colors[0]);
 				state.focusedColor.bindListener(this.setFocusedColor.bind(this));
