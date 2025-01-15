@@ -20,10 +20,14 @@ export function main() {
 												 toolControlsElement);
 		setUpFontSizeEvents(screen.state.focusedTextSize,
 												toolControlsElement);
-		setUpFontNameEvents(screen, toolControlsElement);
-		setUpTextChangeEvents(screen, toolControlsElement);
+		setUpFontNameEvents(screen.state.focusedFontName,
+												toolControlsElement);
+		setUpTextChangeEvents(screen.state.focusedText,
+													toolControlsElement);
+		setUpColorChooser(screen.state.focusedColor,
+											toolControlsElement);
+		
 		setUpDeleteTextEvent(screen, toolControlsElement);
-		setUpColorChooser(screen, toolControlsElement);
 		setUpBackgroundSetter(screen, generalControlsElement);
 		setUpDownloadButton(screen, generalControlsElement);
 		/*const dragListen = new DragListener(canvas.canvas, canvas.scale, 30, listen);
