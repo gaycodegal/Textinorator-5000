@@ -4,7 +4,7 @@ import {Point} from "../math/point.js";
 import {Box} from "../math/box.js";
 
 export class TextBox {
-    constructor(ctx, text, x, y, lineWidth, fontSize, fontFamily, color){
+    constructor(ctx, text, x, y, fontSize, fontFamily, color){
 				this.fontSize = fontSize;
 				this.fontFamily = fontFamily;
 				this.x = x;

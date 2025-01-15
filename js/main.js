@@ -34,7 +34,7 @@ export function main() {
 		/*const dragListen = new DragListener(canvas.canvas, canvas.scale, 30, listen);
 			dragListen.bind();*/
 
-		screen.strokeText("text here 😊", 0,0,10, 100, "sans-serif");
+		screen.strokeText("text here 😊", 0,0);
 		//scroll to expose image controls
 		window.scroll(0, 100);
 }

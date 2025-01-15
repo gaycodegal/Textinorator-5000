@@ -51,11 +51,17 @@ export class Screen {
 				this.repaint();
 		}
 
-		strokeText(text, x, y, lineWidth, fontSize, fontFamily, color = null) {
+		strokeText(text, x, y, fontSize = null, fontFamily = null, color = null) {
 				if (color == null) {
 						color = this.state.focusedColor.get();
 				}
-				const textbox = new TextBox(this.canvas.ctx, text, x, y, lineWidth, fontSize, fontFamily, color);
+				if (fontSize == null) {
+						fontSize = this.state.focusedTextSize.get();
+				}
+				if (fontFamily == null) {
+						fontFamily = this.state.focusedFontName.get();
+				}
+				const textbox = new TextBox(this.canvas.ctx, text, x, y, fontSize, fontFamily, color);
 				textbox.draw(this.canvas);
 				this.canvas.textBoxes.push(textbox);
 				return textbox;
@@ -97,9 +103,7 @@ export class Screen {
 						this.setFocus(this.strokeText(
 								text,
 								Math.floor(this.lastPoint.x),
-								Math.floor(this.lastPoint.y),
-								10, fontSize,
-								fontName));
+								Math.floor(this.lastPoint.y)));
 				}
 		}
 
