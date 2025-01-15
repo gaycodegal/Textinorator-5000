@@ -1,12 +1,7 @@
 import {colors} from "./colors.js";
 
-function makeShadowColor(color) {
-		const shadow = color=="black" ? "white" : "black";
-		return {fill: color, shadow, shadowBlur: 3};
-}
-
-function selectColor(screen, parent, color, button, selected) {
-		screen.state.focusedColor.set(color);
+function selectColor(focusedColorAtom, color, button, selected) {
+		focusedColorAtom.set(color);
 		if (selected.selected != null) {
 				selected.selected.classList.remove("selected");
 		}
@@ -14,20 +9,20 @@ function selectColor(screen, parent, color, button, selected) {
 		selected.selected.classList.add("selected");
 }
 
-function makeColorButton(screen, parent, color, selected) {
+function makeColorButton(focusedColorAtom, parent, color, selected) {
 		const button = document.createElement("button");
 		const bubble = document.createElement("div");
 		button.appendChild(bubble);
 		button.classList.add("color-option");
 		bubble.style.background = color.fill;
-		button.addEventListener('click', (e)=>selectColor(screen, parent, color, e.target, selected));
+		button.addEventListener('click', (e)=>selectColor(focusedColorAtom, color, e.target, selected));
 		parent.appendChild(button);
 		return button;
 }
 
 
-export function setUpColorChooser(screen, controls) {
+export function setUpColorChooser(focusedColorAtom, controls) {
 		const selected = {selected: null};
 		const parent = controls.getElementsByClassName("color-choice")[0];
-		colors.map(color=>makeColorButton(screen, parent, color, selected));
+		colors.map(color=>makeColorButton(focusedColorAtom, parent, color, selected));
 }

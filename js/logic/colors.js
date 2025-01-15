@@ -1,9 +1,9 @@
-const shadowColors = ["red", "orange", "yellow", "green", "blue", "purple", "black", "white"].map(makeShadowColor);
-const strokedColors = [{fill:"white", stroke:"black", strokeWidth: 10}];
+const shadowColors = ["#ff0000", "#ffa500", "#ffff00", "#008000", "#0000ff", "#800080", "#000000", "#ffffff"].map(makeShadowColor);
+const strokedColors = [{fill:"#ffffff", stroke:"#000000", strokeWidth: 10}];
 export let colors = strokedColors.concat(shadowColors);
 
 export function makeShadowColor(color) {
-		const shadow = color=="black" ? "white" : "black";
+		const shadow = color=="#000000" ? "#ffffff" : "#000000";
 		return {fill: color, shadow, shadowBlur: 3};
 }
 

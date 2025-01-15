@@ -1,13 +1,13 @@
-export function setUpFontSizeEvents(screen, controls) {
+export function setUpFontSizeEvents(focusedTextSizeAtom, controls) {
 		const fontSizeSetter = controls.getElementsByClassName("font-size-setter")[0];
 		function doSetFontSize() {
-				let value = fontSizeSetter.value;
+				let value = Number.parseFloat(fontSizeSetter.value);
 				if (value < 3) {
 						value = 3;
 				}
-				screen.state.focusedTextSize.set(value);
+				focusedTextSizeAtom.set(value);
 		}
-		screen.state.focusedTextSize.bindListener((fontSize)=>{
+		focusedTextSizeAtom.bindListener((fontSize)=>{
 				const isFocused = document.activeElement == fontSizeSetter;
 				if (fontSizeSetter.value != fontSize) {
 						fontSizeSetter.value = fontSize;
@@ -15,35 +15,35 @@ export function setUpFontSizeEvents(screen, controls) {
 								fontSizeSetter.blur();
 						}
 				}
-		});
+		}, true);
 		fontSizeSetter.addEventListener("change", doSetFontSize);
 		//textSetter.addEventListener("keyup", setFocusedTextFromSetter);
 }
 
 
-export function setUpFontNameEvents(screen, controls) {
+export function setUpFontNameEvents(focusedFontNameAtom, controls) {
 		const fontNameSetter = controls.getElementsByClassName("font-name-setter")[0];
 		function doSetFontName() {
 				let value = fontNameSetter.value;
-				screen.state.focusedFontName.set(value);
+				focusedFontNameAtom.set(value);
 		}
-		screen.state.focusedFontName.bindListener((name)=>{
+		focusedFontNameAtom.bindListener((name)=>{
 				const isFocused = document.activeElement == fontNameSetter;
 				if (!isFocused && fontNameSetter.value != name) {
 						fontNameSetter.value = name;
 						fontNameSetter.blur();
 				}
-		});
+		}, true);
 		fontNameSetter.addEventListener("change", doSetFontName);
 }
 
 
-export function setUpTextChangeEvents(screen, controls) {
+export function setUpTextChangeEvents(focusedTextAtom, controls) {
 		const textSetter = controls.getElementsByClassName("text-setter")[0];
 		function setFocusedTextFromSetter() {
-				screen.state.focusedText.set(textSetter.value);
+				focusedTextAtom.set(textSetter.value);
 		}
-		screen.state.focusedText.bindListener((text)=>{
+		focusedTextAtom.bindListener((text)=>{
 				if (textSetter.value != text) {
 						textSetter.value = text;
 						textSetter.blur();
