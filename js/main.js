@@ -1,7 +1,8 @@
 import * as DrawingCanvas from "./render/canvas.js";
 import {Screen} from "./render/screen.js";
 import {setUpFontSizeEvents, setUpFontNameEvents, setUpTextChangeEvents, setUpBackgroundSetter, setUpDeleteTextEvent, setUpDownloadButton} from "./logic/set-background.js";
-import {setUpColorChooser, setUpFontColorEvents} from "./logic/color-chooser.js";
+import {setUpFontColorEvents} from "./logic/set-up-color-controls.js";
+import {setUpColorChooser} from "./logic/color-chooser.js";
 
 export function main() {
 		const canvas = DrawingCanvas.createMainCanvas(document.getElementById("container"));
