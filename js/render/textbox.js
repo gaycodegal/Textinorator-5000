@@ -107,7 +107,7 @@ export class TextBox {
 				ctx.font = this.font;
 				const m = ctx.measureText(text);
 				const width = m.actualBoundingBoxRight - m.actualBoundingBoxLeft;
-				const height = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent*2;
+				const height = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
 				const halfLineWidth = Math.ceil(lineWidth/2);
 				// amount we want to overflow the normal text bounds to the left
 				const offsetX = -m.actualBoundingBoxLeft + halfLineWidth;
