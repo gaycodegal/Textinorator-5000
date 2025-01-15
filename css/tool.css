@@ -1,3 +1,7 @@
+.font-size-setter, .font-color-fill, .font-color-stroke, .font-stroke-properties, .font-stroke-width {
+		margin: 10px 0;
+}
+
 .color-choice {
 		display: flex;
 		gap: 5px;
