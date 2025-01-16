@@ -8,14 +8,22 @@ export class TextTool {
 				// live state
 				const state = {};
 				this.state = state;
+				
 				state.focusedText = atom("");
-				state.focusedText.bindListener(this.setFocusedText.bind(this));
+				state.focusedText.bindListener(
+						this.setFocusedText.bind(this));
+				
 				state.focusedTextSize = atom(100);
-				state.focusedTextSize.bindListener(this.setFocusedTextSize.bind(this));
+				state.focusedTextSize.bindListener(
+						this.setFocusedTextSize.bind(this));
+				
 				state.focusedFontName = atom("sans-serif");
-				state.focusedFontName.bindListener(this.setFocusedFontName.bind(this));
+				state.focusedFontName.bindListener(
+						this.setFocusedFontName.bind(this));
+				
 				state.focusedColor = atom(colors[0]);
-				state.focusedColor.bindListener(this.setFocusedColor.bind(this));
+				state.focusedColor.bindListener(
+						this.setFocusedColor.bind(this));
 				
 				this.canvas = canvas;
 				this.snapRadius = snapRadius;
@@ -58,7 +66,8 @@ export class TextTool {
 				if (fontFamily == null) {
 						fontFamily = this.state.focusedFontName.get();
 				}
-				const textbox = new TextBox(this.canvas.ctx, text, x, y, fontSize, fontFamily, color);
+				const textbox = new TextBox(
+						this.canvas.ctx, text, x, y, fontSize, fontFamily, color);
 				textbox.draw(this.canvas);
 				this.canvas.textBoxes.push(textbox);
 				return textbox;
@@ -180,7 +189,10 @@ export class TextTool {
 				}
 
 				if (this.focus != null) {
-						this.dragForwardListener = this.focus.getListenerForPoint(this.canvas, pt, this.clickRadius * canvas.state.scale.get());
+						const scaledClickRadius
+									= this.clickRadius * canvas.state.scale.get();
+						this.dragForwardListener = this.focus
+								.getListenerForPoint(this.canvas, pt, scaledClickRadius);
 				}
 				if (this.dragForwardListener != null) {
 						this.dragForwardListener.ondown(pt);
