@@ -37,6 +37,22 @@ export function setUpFontNameEvents(focusedFontNameAtom, controls) {
 		fontNameSetter.addEventListener("change", doSetFontName);
 }
 
+export function setUpFontVerticalEvent(focusedFontVerticalAtom, controls) {
+		const fontVerticalInput = controls.getElementsByClassName("font-vertical")[0];
+		function doSetFontVertical() {
+				let value = fontVerticalInput.checked;
+				focusedFontVerticalAtom.set(value);
+		}
+		focusedFontVerticalAtom.bindListener((isVertical)=>{
+				const isFocused = document.activeElement == fontVerticalInput;
+				if (!isFocused && fontVerticalInput.checked != isVertical) {
+						fontVerticalInput.checked = isVertical;
+						fontVerticalInput.blur();
+				}
+		}, true);
+		fontVerticalInput.addEventListener("change", doSetFontVertical);
+}
+
 
 export function setUpTextChangeEvents(focusedTextAtom, controls) {
 		const textSetter = controls.getElementsByClassName("text-setter")[0];

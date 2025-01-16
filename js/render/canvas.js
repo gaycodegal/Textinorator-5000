@@ -26,8 +26,8 @@ export class DrawingCanvas {
 						this.canvas.style["writing-mode"] = "vertical-rl";
 						this.canvas.style["text-orientation"] = "upright";
 				} else {
-						this.canvas.style["writing-mode"] = "auto";
-						this.canvas.style["text-orientation"] = "auto";
+						this.canvas.style["writing-mode"] = "";
+						this.canvas.style["text-orientation"] = "";
 				}
 		}
 

@@ -8,7 +8,11 @@ export class TextTool {
 				// live state
 				const state = {};
 				this.state = state;
-				
+
+				state.focusedTextVertical = atom(false);
+				state.focusedTextVertical.bindListener(
+						this.setFocusedTextVertical.bind(this));
+
 				state.focusedText = atom("");
 				state.focusedText.bindListener(
 						this.setFocusedText.bind(this));
@@ -33,6 +37,13 @@ export class TextTool {
 				this.dragForwardListener = null;
 				this.startedWithFocus = false;
 				this.lastPoint = null;
+		}
+
+		setFocusedTextVertical(vertical) {
+				if (this.focus != null && vertical != this.focus.vertical) {
+						this.focus.setVertical(this.canvas, vertical);
+						this.repaint();
+				}
 		}
 
 		setFocusedTextSize(size) {
@@ -121,6 +132,8 @@ export class TextTool {
 						this.state.focusedFontName.set(fontName);
 						const focusColor = this.getFocusedColor(this.focus);
 						this.state.focusedColor.set(focusColor);
+						const isVertical = this.getFocusedTextVertical(this.focus);
+						this.state.focusedTextVertical.set(isVertical);
 				}
 				if (repaint) {
 						this.repaint();
@@ -139,6 +152,15 @@ export class TextTool {
 						return focus.text;
 				} else {
 						return "";
+				}
+		}
+
+
+		getFocusedTextVertical(focus) {
+				if (focus != null) {
+						return focus.vertical;
+				} else {
+						return false;
 				}
 		}
 

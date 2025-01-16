@@ -36,6 +36,13 @@ export class TextBox {
 				return this.color.strokeWidth ?? 0;
 		}
 
+		setVertical(canvas, vertical) {
+				if (this.vertical != vertical) {
+						this.vertical = vertical;
+						this.resize(canvas);
+				}
+		}
+
 		retext(canvas, text) {
 				this.text = text;
 				this.resize(canvas);
