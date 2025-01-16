@@ -3,6 +3,10 @@ html {
     margin: 0px;
 }
 
+.download-image, .image-name, .image-picker {
+		margin: 10px 0;
+}
+
 canvas {
 		background: rgba(128, 128, 128, 0.3);
 }
