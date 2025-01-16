@@ -113,10 +113,10 @@ export class TextBox {
 
 		calculateSize(canvas, text, x, y, lineWidth) {
 				const ctx = canvas.ctx;
-				ctx.font = this.font;
 				if (this.vertical) {
 						canvas.setModeVertical(true);
 				}
+				ctx.font = this.font;
 				const m = ctx.measureText(text);
 				if (this.vertical) {
 						canvas.setModeVertical(false);
@@ -178,19 +178,31 @@ export class TextBox {
 		draw(canvas) {
 				const ctx = canvas.ctx;
 				const box = this.box;
-				ctx.font = this.font;
 				const text = this.text;
 				const self = this;
 				this.useContextColor(ctx, ()=>{
 						if (this.vertical) {
 								canvas.setModeVertical(true);
 						}
-						if (this.lineWidth > 0) {
-								ctx.strokeText(text, box.x + box.offsetX, box.y + box.offsetY);
+						ctx.font = this.font;
+						let x = box.x + box.offsetX;
+						let y = box.y + box.offsetY;
+						
+						if (this.vertical && canvas.shouldWorkAroundChromium) {
+								ctx.rotate((90 * Math.PI) / 180);
+								x = box.y + box.offsetY;
+								y = -(box.x);
 						}
-						ctx.fillText(text, box.x + box.offsetX, box.y + box.offsetY);
+						if (this.lineWidth > 0) {
+								ctx.strokeText(text, x, y);
+						}
+						ctx.fillText(text, x, y);
 						if (this.vertical) {
 								canvas.setModeVertical(false);
+						}
+						if (canvas.shouldWorkAroundChromium) {
+								// reset transform
+								ctx.setTransform(1, 0, 0, 1, 0, 0);
 						}
 				});
 		}
