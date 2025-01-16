@@ -42,10 +42,10 @@ export class TextTool {
 		}
 
 		setFocusedColor(color) {
-				if (this.focus != null) {
+				if (this.focus != null && this.focus.color != color) {
 						this.focus.setColor(this.canvas.ctx, cloneColor(color));
+						this.repaint();
 				}
-				this.repaint();
 		}
 
 		strokeText(text, x, y, fontSize = null, fontFamily = null, color = null) {
@@ -112,6 +112,8 @@ export class TextTool {
 				if (this.focus != null) {
 						const fontName = this.getFocusedFontName(this.focus);
 						this.state.focusedFontName.set(fontName);
+						const focusColor = this.getFocusedColor(this.focus);
+						this.state.focusedColor.set(focusColor);
 				}
 				if (repaint) {
 						this.repaint();
@@ -130,6 +132,14 @@ export class TextTool {
 						return focus.text;
 				} else {
 						return "";
+				}
+		}
+
+		getFocusedColor(focus) {
+				if (focus != null) {
+						return focus.color;
+				} else {
+						return {};
 				}
 		}
 
