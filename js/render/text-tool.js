@@ -8,7 +8,11 @@ export class TextTool {
 				// live state
 				const state = {};
 				this.state = state;
-				
+
+				state.focusedTextVertical = atom(false);
+				state.focusedTextVertical.bindListener(
+						this.setFocusedTextVertical.bind(this));
+
 				state.focusedText = atom("");
 				state.focusedText.bindListener(
 						this.setFocusedText.bind(this));
@@ -35,28 +39,35 @@ export class TextTool {
 				this.lastPoint = null;
 		}
 
+		setFocusedTextVertical(vertical) {
+				if (this.focus != null && vertical != this.focus.vertical) {
+						this.focus.setVertical(this.canvas, vertical);
+						this.repaint();
+				}
+		}
+
 		setFocusedTextSize(size) {
 				if (this.focus != null && size != this.focus.fontSize) {
-						this.focus.setFontSize(this.canvas.ctx, size);
+						this.focus.setFontSize(this.canvas, size);
 						this.repaint();
 				}
 		}
 
 		setFocusedFontName(name) {
 				if (this.focus != null && name != this.focus.fontFamily) {
-						this.focus.setFontName(this.canvas.ctx, name);
+						this.focus.setFontName(this.canvas, name);
 						this.repaint();
 				}
 		}
 
 		setFocusedColor(color) {
 				if (this.focus != null && this.focus.color != color) {
-						this.focus.setColor(this.canvas.ctx, cloneColor(color));
+						this.focus.setColor(this.canvas, cloneColor(color));
 						this.repaint();
 				}
 		}
 
-		strokeText(text, x, y, fontSize = null, fontFamily = null, color = null) {
+		strokeText(text, x, y, fontSize = null, fontFamily = null, color = null, vertical = null) {
 				if (color == null) {
 						color = this.state.focusedColor.get();
 				}
@@ -66,8 +77,11 @@ export class TextTool {
 				if (fontFamily == null) {
 						fontFamily = this.state.focusedFontName.get();
 				}
+				if (vertical == null) {
+						vertical = this.state.focusedTextVertical.get();
+				}
 				const textbox = new TextBox(
-						this.canvas.ctx, text, x, y, fontSize, fontFamily, color);
+						this.canvas, text, x, y, fontSize, fontFamily, color, vertical);
 				textbox.draw(this.canvas);
 				this.canvas.textBoxes.push(textbox);
 				return textbox;
@@ -91,9 +105,7 @@ export class TextTool {
 
 		repaint() {
 				this.canvas.repaint();
-				if (this.focus != null) {
-						this.focus.drawControls(this.canvas);
-				}
+				this.drawControls();
 		}
 
 		setFocusedText(text) {
@@ -101,7 +113,7 @@ export class TextTool {
 						if (this.focus.text == text) {
 								return;
 						}
-						this.focus.retext(this.canvas.ctx, text);
+						this.focus.retext(this.canvas, text);
 						this.repaint();
 				} else if (this.lastPoint != null && text != "") {
 						const fontSize = this.state.focusedTextSize.get();
@@ -123,6 +135,8 @@ export class TextTool {
 						this.state.focusedFontName.set(fontName);
 						const focusColor = this.getFocusedColor(this.focus);
 						this.state.focusedColor.set(focusColor);
+						const isVertical = this.getFocusedTextVertical(this.focus);
+						this.state.focusedTextVertical.set(isVertical);
 				}
 				if (repaint) {
 						this.repaint();
@@ -141,6 +155,15 @@ export class TextTool {
 						return focus.text;
 				} else {
 						return "";
+				}
+		}
+
+
+		getFocusedTextVertical(focus) {
+				if (focus != null) {
+						return focus.vertical;
+				} else {
+						return false;
 				}
 		}
 
@@ -208,6 +231,12 @@ export class TextTool {
 				}
 
 				return false; // we didn't click on anything
+		}
+
+		drawControls() {
+				if (this.focus != null) {
+						this.focus.drawControls(this.canvas);
+				}
 		}
 
 		shouldPreventDrag() {

@@ -11,19 +11,17 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - Upload custom fonts (to be cached in browser)
 - Support emoji + non-ascii characters [complete]
   - This depends on your browser, but most should do it
-- Stroke style, color, size
-- Color [50%]
+- Stroke style, color, size [complete]
+- Color [complete]
 - Background [complete]
 - Rotation
 - Scale [complete]
 - Move / edit / add text [complete]
-- A better UI [50%]
+- A better UI [complete]
 - Offline use / install via PWA install/service worker tech.
-- Vertical text support
-  - My math on text box bounding size is insufficient for vertical text
-	  in a way I am really unclear what's wrong at the moment. Canvas
-		supports it just fine though, so I'll need to add a toggle
-		and do the math for completeness
+- Vertical text support [complete]
+  - font shadow doesn't work with this for some reason, so disabled
+	  at least in firefox that is.
 
 ## Controls
 
@@ -42,5 +40,4 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - optional snap text to screen borders
 - controlbox looks weird when canvas.scale is large due to pixel-fixed rectangle; improve this
 - set default font
-- maybe add the option for text shadow?
 - an options page

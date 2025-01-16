@@ -1,13 +1,17 @@
 let mainModule = import("./main.js");
 
 async function main() {
-		const toRun = (await mainModule).main;
-		if (document.readyState === "complete") {
-				toRun();
-		} else {
-				window.addEventListener("load", toRun);
-		}
-
+		mainModule.then(module=>{
+				const toRun = module.main;
+				if (document.readyState === "complete") {
+						toRun();
+				} else {
+						window.addEventListener("load", toRun);
+				}
+		}).catch(e => {
+				console.log(mainModule);
+				console.error(e);
+		});
     
 }
 
