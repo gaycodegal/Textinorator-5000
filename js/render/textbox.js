@@ -127,7 +127,7 @@ export class TextBox {
 				
 				if (this.vertical) {
 						height = m.width;
-						width = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent + m.ideographicBaseline;
+						width = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
 				}
 				
 				const halfLineWidth = Math.ceil(lineWidth/2);
@@ -191,7 +191,7 @@ export class TextBox {
 						if (this.vertical && canvas.shouldWorkAroundChromium) {
 								ctx.rotate((90 * Math.PI) / 180);
 								x = box.y + box.offsetY;
-								y = -(box.x);
+								y = -(box.x) - box.offsetY;
 						}
 						if (this.lineWidth > 0) {
 								ctx.strokeText(text, x, y);
