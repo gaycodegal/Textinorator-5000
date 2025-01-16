@@ -137,7 +137,11 @@ export class TextBox {
 				let offsetY = -m.actualBoundingBoxDescent + height  + halfLineWidth;
 				if (this.vertical) {
 						// TODO kinda lost here but like ehhh its okish
-						offsetX = halfLineWidth + m.actualBoundingBoxAscent;
+						const browserIncompatibleFudgeFactor
+									= Math.min(
+											m.actualBoundingBoxDescent,
+											m.actualBoundingBoxAscent);
+						offsetX = halfLineWidth + browserIncompatibleFudgeFactor;
 						offsetY = halfLineWidth;
 				}
 				offsetX = Math.round(offsetX);
@@ -191,7 +195,7 @@ export class TextBox {
 						if (this.vertical && canvas.shouldWorkAroundChromium) {
 								ctx.rotate((90 * Math.PI) / 180);
 								x = box.y + box.offsetY;
-								y = -(box.x) - box.offsetY;
+								y = -(box.x + box.offsetX);
 						}
 						if (this.lineWidth > 0) {
 								ctx.strokeText(text, x, y);
