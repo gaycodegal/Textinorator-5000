@@ -119,10 +119,8 @@ export class TextBox {
 				let height = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
 				
 				if (this.vertical) {
-						const tempWidth = width;
-						width = height;
-						height = tempWidth;
-						height += m.hangingBaseline;
+						height = m.width;
+						width = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent + m.ideographicBaseline;
 				}
 				
 				const halfLineWidth = Math.ceil(lineWidth/2);
@@ -132,7 +130,7 @@ export class TextBox {
 				let offsetY = -m.actualBoundingBoxDescent + height  + halfLineWidth;
 				if (this.vertical) {
 						// TODO kinda lost here but like ehhh its okish
-						offsetX = halfLineWidth;
+						offsetX = halfLineWidth + m.actualBoundingBoxAscent;
 						offsetY = halfLineWidth;
 				}
 				offsetX = Math.round(offsetX);
@@ -159,12 +157,12 @@ export class TextBox {
 				ctx.strokeStyle = this.color.stroke;
 				const shadowColor = ctx.shadowColor;
 				const shadowBlur = ctx.shadowBlur;
-				if (this.color.shadow) {
+				if (this.color.shadow && !this.vertical) {
 						ctx.shadowColor = this.color.shadow;
 						ctx.shadowBlur = this.color.shadowBlur;
 				}
 				fn();
-				if (this.color.shadow) {
+				if (this.color.shadow && !this.vertical) {
 						ctx.shadowColor = shadowColor;
 						ctx.shadowBlur = shadowBlur;
 				}
