@@ -138,9 +138,9 @@ export class TextBox {
 				if (this.vertical) {
 						// TODO kinda lost here but like ehhh its okish
 						const browserIncompatibleFudgeFactor
-									= Math.min(
-											m.actualBoundingBoxDescent,
-											m.actualBoundingBoxAscent);
+									= canvas.shouldWorkAroundChromium ?
+									m.actualBoundingBoxDescent :
+									m.actualBoundingBoxAscent;
 						offsetX = halfLineWidth + browserIncompatibleFudgeFactor;
 						offsetY = halfLineWidth;
 				}
