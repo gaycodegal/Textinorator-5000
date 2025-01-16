@@ -17,24 +17,26 @@ export function main() {
 				/* snap deadzone */ 5,
 				/* handle drag click zone */ 30);
 		window.screen = screen;
-		setUpFontColorEvents(screen.state.focusedColor,
+
+		const textTool = screen.tools.text;
+		setUpFontColorEvents(textTool.state.focusedColor,
 												 toolControlsElement);
-		setUpFontSizeEvents(screen.state.focusedTextSize,
+		setUpFontSizeEvents(textTool.state.focusedTextSize,
 												toolControlsElement);
-		setUpFontNameEvents(screen.state.focusedFontName,
+		setUpFontNameEvents(textTool.state.focusedFontName,
 												toolControlsElement);
-		setUpTextChangeEvents(screen.state.focusedText,
+		setUpTextChangeEvents(textTool.state.focusedText,
 													toolControlsElement);
-		setUpColorChooser(screen.state.focusedColor,
+		setUpColorChooser(textTool.state.focusedColor,
 											toolControlsElement);
 		
-		setUpDeleteTextEvent(screen, toolControlsElement);
+		setUpDeleteTextEvent(textTool, toolControlsElement);
 		setUpBackgroundSetter(screen, generalControlsElement);
 		setUpDownloadButton(screen, generalControlsElement);
 		/*const dragListen = new DragListener(canvas.canvas, canvas.scale, 30, listen);
 			dragListen.bind();*/
 
-		screen.strokeText("text here 😊", 0,0);
+		screen.tools.text.strokeText("text here 😊", 0,0);
 		//scroll to expose image controls
 		window.scroll(0, 100);
 }

@@ -60,11 +60,12 @@ export class DragListener {
 				this.prev = pt;
 				this.downpoint = pt;
 
-				if (this.listener.focus == null) {
+				if (this.listener.shouldPreventDrag() == false) {
 						this.dragging = false;
 						return;
 				}
 				this.dragging = this.listener.ondown(pt);
+
 				if (this.dragging) {
 						event.preventDefault();
 						event.stopPropagation();
