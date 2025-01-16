@@ -19,7 +19,9 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - Move / edit / add text [complete]
 - A better UI [complete]
 - Offline use / install via PWA install/service worker tech.
-- Vertical text support [complete]
+- Vertical text support [50%]
+	- it works in firefox, but very much does not work in chrome
+	  - the more you know 🌠
   - font shadow doesn't work with this for some reason, so disabled
 	  at least in firefox that is.
 
