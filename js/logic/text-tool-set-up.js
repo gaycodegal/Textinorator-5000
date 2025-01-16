@@ -1,7 +1,7 @@
 import {setUpFontSizeEvents,
 				setUpFontNameEvents,
 				setUpTextChangeEvents,
-				setUpDeleteTextEvent} from "./set-background.js";
+				setUpDeleteTextEvent} from "./set-up-font-events.js";
 import {setUpFontColorEvents} from "./set-up-color-controls.js";
 import {setUpColorChooser} from "./color-chooser.js";
 
