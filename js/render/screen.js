@@ -1,7 +1,6 @@
 import {DragListener} from "../events/drag.js";
 import {Point} from "../math/point.js";
 import {TextTool} from "./text-tool.js";
-import {TextBox} from "./textbox.js";
 import {atom} from "../state/atom.js";
 import {colors, cloneColor} from "../logic/colors.js";
 

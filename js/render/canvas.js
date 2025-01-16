@@ -21,6 +21,16 @@ export class DrawingCanvas {
 				this.background = null;
     }
 
+		setModeVertical(vertical = true) {
+				if (vertical) {
+						this.canvas.style["writing-mode"] = "vertical-rl";
+						this.canvas.style["text-orientation"] = "upright";
+				} else {
+						this.canvas.style["writing-mode"] = "auto";
+						this.canvas.style["text-orientation"] = "auto";
+				}
+		}
+
 		changeScale(scale){
 				const {width, height} = this.state.size.get();
 				this.canvas.style.width = `${width/scale}px`;
@@ -57,7 +67,7 @@ export class DrawingCanvas {
 		}
 
 		calculateTextbox(text, x, y, lineWidth, fontSize, fontFamily, fg, bg) {
-				return new TextBox(this.ctx, text, x, y, lineWidth, fontSize, fontFamily, fg, bg);
+				return new TextBox(this, text, x, y, lineWidth, fontSize, fontFamily, fg, bg);
 		}
 
 		clear() {

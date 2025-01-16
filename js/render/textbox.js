@@ -4,14 +4,15 @@ import {Point} from "../math/point.js";
 import {Box} from "../math/box.js";
 
 export class TextBox {
-    constructor(ctx, text, x, y, fontSize, fontFamily, color){
+    constructor(canvas, text, x, y, fontSize, fontFamily, color){
 				this.fontSize = fontSize;
 				this.fontFamily = fontFamily;
 				this.x = x;
 				this.y = y;
 				this.color = color;
 				this.selected = true;
-				this.retext(ctx, text);
+				this.vertical = false;
+				this.retext(canvas, text);
     }
 
 		moveTo(point) {
@@ -35,37 +36,37 @@ export class TextBox {
 				return this.color.strokeWidth ?? 0;
 		}
 
-		retext(ctx, text) {
+		retext(canvas, text) {
 				this.text = text;
-				this.resize(ctx);
+				this.resize(canvas);
 		}
 
-		setColor(ctx, color) {
+		setColor(canvas, color) {
 				const lineWidthOld = this.lineWidth;
 				this.color = color;
 				if (this.lineWidth != lineWidthOld) {
-						this.resize(ctx);
+						this.resize(canvas);
 				}
 		}
 
-		setFontName(ctx, name) {
+		setFontName(canvas, name) {
 				if (this.fontFamily == name) {
 						return;
 				}
 				this.fontFamily = name;
-				this.resize(ctx);
+				this.resize(canvas);
 		}
 
-		setFontSize (ctx, fontSize) {
+		setFontSize (canvas, fontSize) {
 				if (this.fontSize == fontSize) {
 						return;
 				}
 				this.fontSize = fontSize;
-				this.resize(ctx);
+				this.resize(canvas);
 		}
 
-		resize(ctx) {
-				this.box = this.calculateSize(ctx, this.text, this.x, this.y, this.lineWidth);
+		resize(canvas) {
+				this.box = this.calculateSize(canvas, this.text, this.x, this.y, this.lineWidth);
 		}
 
 		rebox(canvas, box) {
@@ -74,7 +75,7 @@ export class TextBox {
 				const thisTrueWidth = this.box.width - this.lineWidth;
 				const nextTrueWidth = box.width - this.lineWidth;
 				this.fontSize = this.fontSize * nextTrueWidth / thisTrueWidth;
-				this.resize(canvas.ctx);
+				this.resize(canvas);
 		}
 		
 		points() {
@@ -103,16 +104,39 @@ export class TextBox {
 				return `${this.fontSize}px ${this.fontFamily}`;
 		}
 
-		calculateSize(ctx, text, x, y, lineWidth) {
+		calculateSize(canvas, text, x, y, lineWidth) {
+				const ctx = canvas.ctx;
 				ctx.font = this.font;
+				if (this.vertical) {
+						canvas.setModeVertical(true);
+				}
 				const m = ctx.measureText(text);
-				const width = m.actualBoundingBoxRight - m.actualBoundingBoxLeft;
-				const height = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
+				if (this.vertical) {
+						canvas.setModeVertical(false);
+				}
+
+				let width = m.actualBoundingBoxRight - m.actualBoundingBoxLeft;
+				let height = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
+				
+				if (this.vertical) {
+						const tempWidth = width;
+						width = height;
+						height = tempWidth;
+						height += m.hangingBaseline;
+				}
+				
 				const halfLineWidth = Math.ceil(lineWidth/2);
 				// amount we want to overflow the normal text bounds to the left
-				const offsetX = -m.actualBoundingBoxLeft + halfLineWidth;
+				let offsetX = -m.actualBoundingBoxLeft + halfLineWidth;
 				// amount we want to overflow the normal text bounds to the top
-				const offsetY = -m.actualBoundingBoxDescent + height  + halfLineWidth;
+				let offsetY = -m.actualBoundingBoxDescent + height  + halfLineWidth;
+				if (this.vertical) {
+						// TODO kinda lost here but like ehhh its okish
+						offsetX = halfLineWidth;
+						offsetY = halfLineWidth;
+				}
+				offsetX = Math.round(offsetX);
+				offsetY = Math.round(offsetY);
 				// normal width
 				const boundWidth = Math.ceil(width + lineWidth);
 				const boundHeight = Math.ceil(height + lineWidth);
@@ -153,10 +177,16 @@ export class TextBox {
 				const text = this.text;
 				const self = this;
 				this.useContextColor(ctx, ()=>{
+						if (this.vertical) {
+								canvas.setModeVertical(true);
+						}
 						if (this.lineWidth > 0) {
 								ctx.strokeText(text, box.x + box.offsetX, box.y + box.offsetY);
 						}
 						ctx.fillText(text, box.x + box.offsetX, box.y + box.offsetY);
+						if (this.vertical) {
+								canvas.setModeVertical(false);
+						}
 				});
 		}
 
