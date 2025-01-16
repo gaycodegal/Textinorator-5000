@@ -67,7 +67,7 @@ export class TextTool {
 				}
 		}
 
-		strokeText(text, x, y, fontSize = null, fontFamily = null, color = null) {
+		strokeText(text, x, y, fontSize = null, fontFamily = null, color = null, vertical = null) {
 				if (color == null) {
 						color = this.state.focusedColor.get();
 				}
@@ -77,8 +77,11 @@ export class TextTool {
 				if (fontFamily == null) {
 						fontFamily = this.state.focusedFontName.get();
 				}
+				if (vertical == null) {
+						vertical = this.state.focusedTextVertical.get();
+				}
 				const textbox = new TextBox(
-						this.canvas, text, x, y, fontSize, fontFamily, color);
+						this.canvas, text, x, y, fontSize, fontFamily, color, vertical);
 				textbox.draw(this.canvas);
 				this.canvas.textBoxes.push(textbox);
 				return textbox;

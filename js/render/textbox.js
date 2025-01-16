@@ -4,14 +4,14 @@ import {Point} from "../math/point.js";
 import {Box} from "../math/box.js";
 
 export class TextBox {
-    constructor(canvas, text, x, y, fontSize, fontFamily, color){
+    constructor(canvas, text, x, y, fontSize, fontFamily, color, vertical = false){
 				this.fontSize = fontSize;
 				this.fontFamily = fontFamily;
 				this.x = x;
 				this.y = y;
 				this.color = color;
 				this.selected = true;
-				this.vertical = false;
+				this.vertical = vertical;
 				this.retext(canvas, text);
     }
 
