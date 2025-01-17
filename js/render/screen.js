@@ -13,13 +13,20 @@ export class Screen {
 				this.canvas = canvas;
 				this.tools = {
 						text: new TextTool(canvas, snapRadius, clickRadius),
-						free: new FreeTool(canvas),
+						draw: new FreeTool(canvas),
 				};
-				this.tools.free.colorAtom = this.tools.text.state.focusedColor;
-				this.activeTool = this.tools.free;
+				this.activeTool = this.tools.text;
 				this.dragListen = new DragListener(canvas.canvas, canvas.state.scale, this.snapRadius, this);
 				this.dragListen.bind();
 				this.canvas.state.scale.bindListener(this.repaint.bind(this));
+		}
+
+		setActiveTool(tool) {
+				if (this.tools[tool] == null) {
+						return;
+				}
+				this.activeTool = this.tools[tool];
+				this.activeTool.onselected(tool);
 		}
 
 		repaint() {

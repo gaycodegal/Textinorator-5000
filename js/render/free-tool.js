@@ -1,5 +1,7 @@
 import {Point} from "../math/point.js";
 import {Stack} from "../math/stack.js";
+import {atom} from "../state/atom.js";
+import {drawColors} from "../logic/colors.js";
 
 
 /////////////////////
@@ -8,6 +10,8 @@ import {Stack} from "../math/stack.js";
 
 export class FreeTool {
 		constructor(canvas) {
+				this.state = {};
+				this.state.color = atom(drawColors[0]);
 				this.stack = new Stack(512);
 				this.last = null;
 				this.temp = null;
@@ -46,8 +50,8 @@ export class FreeTool {
 
 		setStyle (ctx) {
 				let color = {fill: "black", strokeWidth: 5};
-				if (this.colorAtom) {
-						const atomicColor = this.colorAtom.get();
+				if (this.state.color) {
+						const atomicColor = this.state.color.get();
 						color.fill = atomicColor.fill;
 						color.strokeWidth = atomicColor.strokeWidth || color.strokeWidth;
 				}

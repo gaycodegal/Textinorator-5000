@@ -21,8 +21,11 @@ function makeColorButton(focusedColorAtom, parent, color, selected) {
 }
 
 
-export function setUpColorChooser(focusedColorAtom, controls) {
+export function setUpColorChooser(focusedColorAtom, controls, palette = null) {
 		const selected = {selected: null};
+		if (palette == null) {
+				palette = colors;
+		}
 		const parent = controls.getElementsByClassName("color-choice")[0];
-		colors.map(color=>makeColorButton(focusedColorAtom, parent, color, selected));
+		palette.map(color=>makeColorButton(focusedColorAtom, parent, color, selected));
 }
