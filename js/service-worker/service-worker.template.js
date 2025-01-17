@@ -9,6 +9,7 @@ self.addEventListener("install", event => {
 						".",
 						"manifest.json",
 						"favicon.ico",
+						"html/icons/icon-192.webp",
 						//{extra_sources_here}
 				])
     );
