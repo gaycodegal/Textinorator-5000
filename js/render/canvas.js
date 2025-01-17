@@ -1,4 +1,5 @@
 import {TextBox} from "./textbox.js";
+import {Point} from "../math/point.js";
 import {atom} from "../state/atom.js";
 import {shouldWorkaroundChromium} from "./should-workaround-chromium.js";
 
@@ -16,10 +17,21 @@ export class DrawingCanvas {
 				state.size = atom({width: 1, height: 1});
 				state.size.bindListener(this.changeSize.bind(this));
 				state.shouldExpandImageToScreenWidth = atom(true);
+
+				this.origin = new Point(0,0);
 				
 				this.canvas = document.createElement("canvas");
 				this.canvas.classList.add("render-canvas");
 				this.ctx = this.canvas.getContext("2d");
+				
+				this.tcanvas = document.createElement("canvas");
+				this.tcanvas.classList.add("render-canvas");
+				this.tctx = this.tcanvas.getContext("2d");
+
+				this.bg_canvas = document.createElement("canvas");
+				this.bg_canvas.classList.add("render-canvas");
+				this.bg_ctx = this.bg_canvas.getContext("2d");
+
 				this.drawables = [];
 				this.background = null;
     }
@@ -43,9 +55,17 @@ export class DrawingCanvas {
 		changeSize({width, height}) {
 				this.canvas.width = width;
 				this.canvas.height = height;
+				this.tcanvas.width = width;
+				this.tcanvas.height = height;
+				this.bg_canvas.width = width;
+				this.bg_canvas.height = height;
 				this.smoothIt(true);
 				this.ctx.lineCap = "round";
 				this.ctx.lineJoin = "round";
+				this.bg_ctx.lineCap = "round";
+				this.bg_ctx.lineJoin = "round";
+				this.tctx.lineCap = "round";
+				this.tctx.lineJoin = "round";
 				this.state.scale.notifyListeners();
 		} 
 
@@ -72,16 +92,20 @@ export class DrawingCanvas {
 				return new TextBox(this, text, x, y, lineWidth, fontSize, fontFamily, fg, bg);
 		}
 
+		clearTemp() {
+				const {width, height} = this.state.size.get();
+				this.tctx.clearRect(0,0, width, height);
+		}
+
 		clear() {
 				const {width, height} = this.state.size.get();
 				this.ctx.clearRect(0,0, width, height);
-				if(this.background != null) {
-						this.ctx.drawImage(this.background, 0, 0)
-				}
+				this.ctx.drawImage(this.bg_canvas, 0, 0);
 		}
 
 		repaint() {
 				this.clear();
+				this.ctx.drawImage(this.tcanvas, 0, 0);
 				this.drawables.forEach(drawable=>drawable.draw(this));
 		}
 
@@ -95,13 +119,24 @@ export class DrawingCanvas {
 				ctx.imageSmoothingEnabled = smooth;
 				ctx.mozImageSmoothingEnabled = smooth;
 				ctx.webkitImageSmoothingEnabled = smooth;
+				const tctx = this.tctx;
+				tctx.imageSmoothingEnabled = smooth;
+				tctx.mozImageSmoothingEnabled = smooth;
+				tctx.webkitImageSmoothingEnabled = smooth;
+				const bg_ctx = this.bg_ctx;
+				bg_ctx.imageSmoothingEnabled = smooth;
+				bg_ctx.mozImageSmoothingEnabled = smooth;
+				bg_ctx.webkitImageSmoothingEnabled = smooth;
     }
 
 		setBackground(img) {
-				this.background = img;
 				this.resize(img.width, img.height);
+				console.log(img.width, img.height)
+				this.bg_ctx.drawImage(img, 0, 0);
 				if (this.state.shouldExpandImageToScreenWidth.get()) {
 						this.state.scale.set(determineScale(img.width, window.innerWidth));
+				} else {
+						this.state.scale.notifyListeners();
 				}
 		}
 }

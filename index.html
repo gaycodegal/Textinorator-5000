@@ -29,54 +29,68 @@
 			<div class="tool-controls-container">
 				<div class="horizontal-spacer"></div>
 				<div id="tool-controls" class="tool-controls full-screen-snap-bottom">
-					<label for="text-setter">Selected Text:</label>
-					<input type="text" id="text-setter" class="text-setter"/>
-					<button class="delete-text">Delete Text</button>
-					<br>
-					<div class="color-choice"></div>
-					<details>
-						<summary>Font Properties</summary>
-						<div class="font-properties">
-							<label for="font-size-setter">Font Size:</label>
-							<input type="number" id="font-size-setter" class="font-size-setter"/>
-							<br>
-
-							<label for="font-color-fill">Font Color Fill:</label>
-							<input type="color" id="font-color-fill" class="font-color-fill"/>
-							<br>
-							
-							<label for="font-color-stroke">Font Color Stroke:</label>
-							<input type="color" id="font-color-stroke" class="font-color-stroke"/>
-							<br>
-
-							<label for="font-name-setter">Font Name:</label>
-							<input type="text" id="font-name-setter" class="font-name-setter"/>
-							<br>
-
-							<div class="font-stroke-properties">
-								<div>Font Stroke Properties:</div>
-								<input type="radio" id="font-stroke-none"
-											 class="font-stroke-none"
-											 name="font-stroke" value="none">
-								<label for="font-stroke-none">No font stroke</label>
+					<div class="tool-selector">
+						<button class="select-text-tool-button">Text</button>
+						<button class="select-draw-tool-button">Draw</button>
+					</div>
+					<div style="display: none;"
+							 class="tool-settings-instance draw-tool-settings">
+						<div class="color-choice"></div>
+						<label for="draw-stroke-width">Line Width:</label>
+						<input type="number"
+									 id="draw-stroke-width"
+									 class="draw-stroke-width"
+									 value="10"/>
+					</div>
+					<div class="tool-settings-instance text-tool-settings">
+						<label for="text-setter">Selected Text:</label>
+						<input type="text" id="text-setter" class="text-setter"/>
+						<button class="delete-text">Delete Text</button>
+						<br>
+						<div class="color-choice"></div>
+						<details>
+							<summary>Font Properties</summary>
+							<div class="font-properties">
+								<label for="font-size-setter">Font Size:</label>
+								<input type="number" id="font-size-setter" class="font-size-setter"/>
 								<br>
-								<input type="radio" id="font-stroke-stroke"
-											 class="font-stroke-stroke"
-											 name="font-stroke" value="stroke">
-								<label for="font-stroke-stroke">Stroke font</label><br>
-								<input type="radio" id="font-stroke-shadow"
-											 class="font-stroke-shadow"
-											 name="font-stroke" value="shadow">
-								<label for="font-stroke-shadow">Font shadow</label>
+
+								<label for="font-color-fill">Font Color Fill:</label>
+								<input type="color" id="font-color-fill" class="font-color-fill"/>
+								<br>
+								
+								<label for="font-color-stroke">Font Color Stroke:</label>
+								<input type="color" id="font-color-stroke" class="font-color-stroke"/>
+								<br>
+
+								<label for="font-name-setter">Font Name:</label>
+								<input type="text" id="font-name-setter" class="font-name-setter"/>
+								<br>
+
+								<div class="font-stroke-properties">
+									<div>Font Stroke Properties:</div>
+									<input type="radio" id="font-stroke-none"
+												 class="font-stroke-none"
+												 name="font-stroke" value="none">
+									<label for="font-stroke-none">No font stroke</label>
+									<br>
+									<input type="radio" id="font-stroke-stroke"
+												 class="font-stroke-stroke"
+												 name="font-stroke" value="stroke">
+									<label for="font-stroke-stroke">Stroke font</label><br>
+									<input type="radio" id="font-stroke-shadow"
+												 class="font-stroke-shadow"
+												 name="font-stroke" value="shadow">
+									<label for="font-stroke-shadow">Font shadow</label>
+								</div>
+								<label for="font-stroke-width">Font stroke width:</label>
+								<input type="number" id="font-stroke-width" class="font-stroke-width"/>
+								<br>
+
+								<label for="font-vertical">Vertical text:</label>
+								<input type="checkbox" id="font-vertical" class="font-vertical"/>
 							</div>
-							<label for="font-stroke-width">Font stroke width:</label>
-							<input type="number" id="font-stroke-width" class="font-stroke-width"/>
-							<br>
-
-							<label for="font-vertical">Vertical text:</label>
-							<input type="checkbox" id="font-vertical" class="font-vertical"/>
-
-						</div>
+					</div>
 					</details>
 
 				</div>

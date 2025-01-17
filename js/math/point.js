@@ -15,6 +15,12 @@ export class Point {
 				return new Point(x, y);
 		}
 
+		midPoint (pt) {
+				return new Point(
+						this.x + (pt.x - this.x) / 2,
+						this.y + (pt.y - this.y) / 2);
+		}
+
 		scale(scale) {
 				return new Point(this.x * scale, this.y * scale);
 		}

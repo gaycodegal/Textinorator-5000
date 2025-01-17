@@ -1,6 +1,7 @@
 import {DragListener} from "../events/drag.js";
 import {Point} from "../math/point.js";
 import {TextTool} from "./text-tool.js";
+import {FreeTool} from "./free-tool.js";
 import {atom} from "../state/atom.js";
 import {colors, cloneColor} from "../logic/colors.js";
 
@@ -10,11 +11,22 @@ export class Screen {
 				const state = {};
 				this.state = state;				
 				this.canvas = canvas;
-				this.tools = {text: new TextTool(canvas, snapRadius, clickRadius)};
+				this.tools = {
+						text: new TextTool(canvas, snapRadius, clickRadius),
+						draw: new FreeTool(canvas),
+				};
 				this.activeTool = this.tools.text;
 				this.dragListen = new DragListener(canvas.canvas, canvas.state.scale, this.snapRadius, this);
 				this.dragListen.bind();
 				this.canvas.state.scale.bindListener(this.repaint.bind(this));
+		}
+
+		setActiveTool(tool) {
+				if (this.tools[tool] == null) {
+						return;
+				}
+				this.activeTool = this.tools[tool];
+				this.activeTool.onselected(tool);
 		}
 
 		repaint() {

@@ -2,6 +2,8 @@ import * as DrawingCanvas from "./render/canvas.js";
 import {Screen} from "./render/screen.js";
 import {setUpBackgroundSetter, setUpDownloadButton} from "./logic/set-background.js";
 import {setUpTextToolEvents} from "./logic/text-tool-set-up.js";
+import {setUpDrawToolEvents} from "./logic/set-up-draw-tool.js";
+import {setUpToolSelectors} from "./logic/set-up-tool-selector.js";
 
 export function main() {
 		const canvas = DrawingCanvas.createMainCanvas(document.getElementById("container"));
@@ -18,8 +20,9 @@ export function main() {
 
 		const toolControlsElement = document.getElementById("tool-controls");		
 		const textTool = screen.tools.text;
+		setUpDrawToolEvents(screen.tools.draw, toolControlsElement);
 		setUpTextToolEvents(textTool, toolControlsElement);
-		
+		setUpToolSelectors(screen, toolControlsElement);
 		const generalControlsElement = document.getElementById("general-controls");
 		setUpBackgroundSetter(screen, generalControlsElement);
 		setUpDownloadButton(screen, generalControlsElement);

@@ -7,20 +7,23 @@ import {setUpFontColorEvents} from "./set-up-color-controls.js";
 import {setUpColorChooser} from "./color-chooser.js";
 
 export function setUpTextToolEvents(textTool, toolControlsElement) {
+		const textControlsElement = toolControlsElement
+					.getElementsByClassName("text-tool-settings")[0];
+
 		setUpFontSizeEvents(textTool.state.focusedTextSize,
-												toolControlsElement);
+												textControlsElement);
 		setUpFontNameEvents(textTool.state.focusedFontName,
-												toolControlsElement);
+												textControlsElement);
 		setUpTextChangeEvents(textTool.state.focusedText,
-													toolControlsElement);
+													textControlsElement);
 		setUpFontVerticalEvent(textTool.state.focusedTextVertical,
-													toolControlsElement)
+													textControlsElement)
 		
 		setUpFontColorEvents(textTool.state.focusedColor,
-												 toolControlsElement);
+												 textControlsElement);
 		setUpColorChooser(textTool.state.focusedColor,
-											toolControlsElement);
+											textControlsElement);
 		
-		setUpDeleteTextEvent(textTool, toolControlsElement);
+		setUpDeleteTextEvent(textTool, textControlsElement);
 }
 

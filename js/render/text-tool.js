@@ -41,6 +41,10 @@ export class TextTool {
 				this.lastPoint = null;
 		}
 
+		onselected() {
+				this.focus = null;
+		}
+
 		setFocusedTextVertical(vertical) {
 				if (this.focus != null && vertical != this.focus.vertical) {
 						this.focus.setVertical(this.canvas, vertical);
