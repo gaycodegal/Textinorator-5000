@@ -45,8 +45,14 @@ export class FreeTool {
 		}
 
 		setStyle (ctx) {
-				ctx.lineWidth = 5;
-				ctx.strokeStyle = "black";
+				let color = {fill: "black", strokeWidth: 5};
+				if (this.colorAtom) {
+						const atomicColor = this.colorAtom.get();
+						color.fill = atomicColor.fill;
+						color.strokeWidth = atomicColor.strokeWidth || color.strokeWidth;
+				}
+				ctx.lineWidth = color.strokeWidth;
+				ctx.strokeStyle = color.fill;
 		}
 
 		ondown (point) {
@@ -69,19 +75,19 @@ export class FreeTool {
 						this.tctx,
 						sa.midPoint(sb), sb, sb.midPoint(sc),
 						this.context.origin);
-				this.context.repaint();
+ 				this.context.repaint();
 		}
 
 		onup (point) {
 				if (this.cancelled) return;
 				this.setStyle(this.bg_ctx);
-				this.stack.push(point);
 				this.context.clearTemp();
 				drawFree(
 						this.bg_ctx,
 						this.stack.data,
 						this.stack.fill,
 						this.context.origin);
+ 				this.context.repaint();
 		}
 }
 

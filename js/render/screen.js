@@ -15,6 +15,7 @@ export class Screen {
 						text: new TextTool(canvas, snapRadius, clickRadius),
 						free: new FreeTool(canvas),
 				};
+				this.tools.free.colorAtom = this.tools.text.state.focusedColor;
 				this.activeTool = this.tools.free;
 				this.dragListen = new DragListener(canvas.canvas, canvas.state.scale, this.snapRadius, this);
 				this.dragListen.bind();
