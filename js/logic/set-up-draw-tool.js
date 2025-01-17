@@ -30,10 +30,15 @@ export function setUpDrawLineSizeEvents(colorAtom, controls) {
 export function setUpDrawToolEvents(drawTool, toolControlsElement) {
 		const drawControlsElement = toolControlsElement
 					.getElementsByClassName("draw-tool-settings")[0];
+		const drawSizeSetter = drawControlsElement.getElementsByClassName("draw-stroke-width")[0];
 
 		setUpColorChooser(drawTool.state.color,
 											drawControlsElement,
-											drawColors);
+											drawColors, (color)=>{
+													const nextColor = cloneColor(color);
+													nextColor.strokeWidth = drawSizeSetter.value || 10;
+													return nextColor;
+											});
 		setUpDrawLineSizeEvents(drawTool.state.color,
 														drawControlsElement);
 }
