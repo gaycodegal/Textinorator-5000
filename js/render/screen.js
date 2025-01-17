@@ -14,6 +14,7 @@ export class Screen {
 				this.activeTool = this.tools.text;
 				this.dragListen = new DragListener(canvas.canvas, canvas.state.scale, this.snapRadius, this);
 				this.dragListen.bind();
+				this.canvas.state.scale.bindListener(this.repaint.bind(this));
 		}
 
 		repaint() {

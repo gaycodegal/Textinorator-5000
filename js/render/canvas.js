@@ -43,11 +43,10 @@ export class DrawingCanvas {
 		changeSize({width, height}) {
 				this.canvas.width = width;
 				this.canvas.height = height;
-				this.state.scale.notifyListeners();
 				this.smoothIt(true);
 				this.ctx.lineCap = "round";
 				this.ctx.lineJoin = "round";
-				this.repaint();
+				this.state.scale.notifyListeners();
 		} 
 
 		resizeToScreen() {
