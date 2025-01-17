@@ -28,6 +28,8 @@ export class TextTool {
 				state.focusedColor = atom(colors[0]);
 				state.focusedColor.bindListener(
 						this.setFocusedColor.bind(this));
+
+				this.textBoxes = [];
 				
 				this.canvas = canvas;
 				this.snapRadius = snapRadius;
@@ -84,6 +86,7 @@ export class TextTool {
 						this.canvas, text, x, y, fontSize, fontFamily, color, vertical);
 				textbox.draw(this.canvas);
 				this.canvas.drawables.push(textbox);
+				this.textBoxes.push(textbox);
 				return textbox;
 		}
 
@@ -92,11 +95,15 @@ export class TextTool {
 		}
 		
 		deleteTextBox(box) {
-				const indexToRemove = this.canvas.drawables.indexOf(box);
-				if (indexToRemove == -1) {
-						return;
+				const indexToRemoveDrawable = this.canvas.drawables.indexOf(box);
+				if (indexToRemoveDrawable != -1) {
+						this.canvas.drawables.splice(indexToRemoveDrawable, 1);
 				}
-				this.canvas.drawables.splice(indexToRemove, 1);
+				const indexToRemoveBox = this.textBoxes.indexOf(box);
+				if (indexToRemoveBox != -1) {
+						this.textBoxes.splice(indexToRemoveBox, 1);
+				}
+				
 				if (this.focus == box) {
 						this.setFocus(null);
 				}
@@ -193,14 +200,14 @@ export class TextTool {
 
 		findClickedTextbox(point) {
 				let match = null;
-				this.canvas.drawables.reverse();
-				for(let textbox of this.canvas.drawables) {
+				this.textBoxes.reverse();
+				for(let textbox of this.textBoxes) {
 						if (point.inside(textbox)) {
 								match = textbox;
 								break;
 						}
 				}
-				this.canvas.drawables.reverse();
+				this.textBoxes.reverse();
 				return match;
 		}
 		
