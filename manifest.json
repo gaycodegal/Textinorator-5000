@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "name": "Textinorator-5000",
+    "short_name": "Textinorator",
+    "start_url": ".",
+    "display": "minimal-ui",
+    "background_color": "#333",
+    "theme_color": "#333",
+    "description": "Add text to images.",
+    "icons": [{
+				"src": "html/icons/icon-512.png",
+				"sizes": "512x512",
+				"type": "image/png"
+    },{
+				"src": "html/icons/icon-192.webp",
+				"sizes": "192x192",
+				"type": "image/webp"
+    },{
+				"src": "html/icons/icon-512.png",
+				"type": "image/png",
+				"sizes": "512x512",
+				"purpose": "maskable"
+    },{
+				"src": "html/icons/icon-192.webp",
+				"type": "image/png",
+				"sizes": "192x192",
+				"purpose": "maskable"
+    }]
+}
