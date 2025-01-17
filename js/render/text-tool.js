@@ -83,7 +83,7 @@ export class TextTool {
 				const textbox = new TextBox(
 						this.canvas, text, x, y, fontSize, fontFamily, color, vertical);
 				textbox.draw(this.canvas);
-				this.canvas.textBoxes.push(textbox);
+				this.canvas.drawables.push(textbox);
 				return textbox;
 		}
 
@@ -92,11 +92,11 @@ export class TextTool {
 		}
 		
 		deleteTextBox(box) {
-				const indexToRemove = this.canvas.textBoxes.indexOf(box);
+				const indexToRemove = this.canvas.drawables.indexOf(box);
 				if (indexToRemove == -1) {
 						return;
 				}
-				this.canvas.textBoxes.splice(indexToRemove, 1);
+				this.canvas.drawables.splice(indexToRemove, 1);
 				if (this.focus == box) {
 						this.setFocus(null);
 				}
@@ -193,14 +193,14 @@ export class TextTool {
 
 		findClickedTextbox(point) {
 				let match = null;
-				this.canvas.textBoxes.reverse();
-				for(let textbox of this.canvas.textBoxes) {
+				this.canvas.drawables.reverse();
+				for(let textbox of this.canvas.drawables) {
 						if (point.inside(textbox)) {
 								match = textbox;
 								break;
 						}
 				}
-				this.canvas.textBoxes.reverse();
+				this.canvas.drawables.reverse();
 				return match;
 		}
 		

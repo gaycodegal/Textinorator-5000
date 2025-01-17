@@ -9,6 +9,7 @@ export function drawControls(canvas, box) {
 		ctx.strokeStyle="blue";
 		const lineSize = 1 * scale;
 		ctx.lineWidth=lineSize;
+		// this offset is due to the coordinate system being between pixels
 		const offset = (lineSize % 2) / 2;
 		ctx.strokeRect(box.x - offset, box.y - offset, box.width, box.height);
 		ctx.strokeStyle="white";

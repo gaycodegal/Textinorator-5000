@@ -20,7 +20,7 @@ export class DrawingCanvas {
 				this.canvas = document.createElement("canvas");
 				this.canvas.classList.add("render-canvas");
 				this.ctx = this.canvas.getContext("2d");
-				this.textBoxes = [];
+				this.drawables = [];
 				this.background = null;
     }
 
@@ -82,11 +82,11 @@ export class DrawingCanvas {
 
 		repaint() {
 				this.clear();
-				this.textBoxes.forEach(box=>box.draw(this));
+				this.drawables.forEach(drawable=>drawable.draw(this));
 		}
 
 		wipe() {
-				this.textBoxes = [];
+				this.drawables = [];
 				this.clear();
 		}
 
