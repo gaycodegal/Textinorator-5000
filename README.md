@@ -40,6 +40,5 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
   text area's text like the canvas font/fill/
 - optional safety margin, so its easier to draw when at the size of the screen
 - optional snap text to screen borders
-- controlbox looks weird when canvas.scale is large due to pixel-fixed rectangle; improve this
 - set default font
 - an options page
