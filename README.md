@@ -45,5 +45,4 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - set default font
 - an options page
 - undo/redo history
-- blur focus on controls when you tap the screen
 - point specificity is subject to canvas scale; fix this
