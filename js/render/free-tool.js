@@ -12,10 +12,12 @@ export class FreeTool {
 		constructor(canvas) {
 				this.state = {};
 				this.state.color = atom(drawColors[0]);
+				this.state.suspended = atom(false);
 				this.stack = new Stack(512);
-				this.last = null;
+				this.downpoint = null;
 				this.temp = null;
 				this.moved = false;
+				this.taps = 0;
 
 				this.cancelled = false;
 				this.delay = 0;
@@ -23,7 +25,11 @@ export class FreeTool {
 		}
 
 		drawControls() {
-
+				if (this.state.suspended.get()) {
+						const {width, height} = this.context.state.size.get();
+						this.context.ctx.fillStyle = "rgba(0,0,0,0.4)";
+						this.context.ctx.fillRect(0,0, width, height);
+				}
 		}
 
 		shouldPreventDrag() {
@@ -36,6 +42,11 @@ export class FreeTool {
 				this.cancelled = true;
 				this.context.clearTemp();
 		}
+		
+		repaint() {
+				this.context.repaint();
+				this.drawControls();
+		}
 
 		setContext (context) {
 				this.stack.wipe();
@@ -46,6 +57,8 @@ export class FreeTool {
 
 		onselected () {
 				this.stack.wipe();
+				this.state.suspended.set(false);
+				this.repaint();
 		}
 
 		setStyle (ctx) {
@@ -60,9 +73,14 @@ export class FreeTool {
 		}
 
 		ondown (point) {
+				this.stack.wipe();
+				if (this.state.suspended.get()) {
+						this.cancelled = true;
+						this.repaint();
+						return false;
+				}
 				this.setStyle(this.tctx);
 				
-				this.stack.wipe();
 				this.cancelled = false;
 				this.stack.push(point);
 				return true;
@@ -82,10 +100,26 @@ export class FreeTool {
  				this.context.repaint();
 		}
 
-		onup (point) {
+		onup (point, diff, isTrueDrag) {
+				this.context.clearTemp();
+				if (!isTrueDrag) {
+						++this.taps;
+						if (this.state.suspended.get()) {
+								this.taps = 0;
+								this.state.suspended.set(false);
+								this.repaint();
+								return;
+						}
+						if (this.taps >= 2) {
+								this.taps = 0;
+								this.state.suspended.set(true);
+								this.cancelled = true;
+						}
+						this.repaint();
+						return;
+				}
 				if (this.cancelled) return;
 				this.setStyle(this.bg_ctx);
-				this.context.clearTemp();
 				drawFree(
 						this.bg_ctx,
 						this.stack.data,

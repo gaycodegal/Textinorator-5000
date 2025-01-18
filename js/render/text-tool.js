@@ -43,6 +43,7 @@ export class TextTool {
 
 		onselected() {
 				this.focus = null;
+				this.repaint();
 		}
 
 		setFocusedTextVertical(vertical) {

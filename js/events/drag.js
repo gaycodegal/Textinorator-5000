@@ -45,6 +45,11 @@ export class DragListener {
 				return pt;
 		}
 
+		checkTrueDrag(pt, downpoint) {
+				const scale = this.scale.get();
+				return downpoint && pt.manhatten(downpoint) < this.deadzone * scale;
+		}
+
 		verifyEvent (event) {
 				return event.target == this.target;
 		}
@@ -76,10 +81,15 @@ export class DragListener {
 				if (this.downpoint == null) {
 						return;
 				}
-				const pt = this.pointFromEvent(event, this.downpoint);
+				const pt = this.pointFromEvent(event);
 				const diff = pt.subtract(this.downpoint);
+				const pointEqualsDown = this.checkTrueDrag(pt);
+				if (!pointEqualsDown) {
+						this.isTrueDrag = true;
+				}
+
 				if (!this.dragging) {
-						if (!pt.equals(this.downpoint)) {
+						if (!pointEqualsDown) {
 								this.isTrueDrag = true;
 						}
 						return;
@@ -102,7 +112,7 @@ export class DragListener {
 								event.stopPropagation();
 								this.listener.ondown(this.downpoint);
 								this.listener.onmove(pt, diff);
-								this.listener.onup(pt, diff, !pt.equals(this.downpoint));
+								this.listener.onup(pt, diff, this.isTrueDrag);
 						}
 						this.downpoint = null;
 						this.prev = null;
@@ -113,7 +123,7 @@ export class DragListener {
 
 				event.preventDefault();
 				event.stopPropagation();
-				this.listener.onup(pt, diff, !pt.equals(this.downpoint));
+				this.listener.onup(pt, diff, this.isTrueDrag);
 				this.downpoint = null;
 				this.dragging = false;
 				this.prev = null;
