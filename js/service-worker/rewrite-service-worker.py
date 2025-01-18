@@ -23,7 +23,7 @@ def listFiles(types):
     return paths
 
 def transformPathsIntoText(paths):
-    quoted_paths = ['"{}",'.format(path) for path in paths]
+    quoted_paths = ['"{}",'.format(path) for path in sorted(set(paths))]
     return "\n" + "\n".join(quoted_paths)
 
 def templatedReplace(input_file, output_file, replacements):

@@ -9,7 +9,9 @@ export class Screen {
 		constructor(canvas, snapRadius, clickRadius){
 				// live state
 				const state = {};
-				this.state = state;				
+				this.state = state;
+				this.events = {};
+				this.events.focus = atom(this);
 				this.canvas = canvas;
 				this.tools = {
 						text: new TextTool(canvas, snapRadius, clickRadius),
@@ -47,7 +49,11 @@ export class Screen {
 				if (this.activeTool == null || this.activeTool.ondown == null) {
 						return false;
 				}
-				return this.activeTool.ondown(pt);
+				const didFocus = this.activeTool.ondown(pt);
+				if (didFocus) {
+						this.events.focus.notifyListeners();
+				}
+				return didFocus;
 		}
 
 		onmove(pt, moveOffset) {
