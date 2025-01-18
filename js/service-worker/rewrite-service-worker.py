@@ -6,6 +6,14 @@ import argparse
 import glob
 import os
 import pprint
+import json
+
+def stampFileEntry(filePath):
+    time = os.path.getmtime(filePath)
+    return {"path": filePath, "time": time}
+
+def stampList(paths):
+    return [stampFileEntry(path) for path in paths]
 
 def valid_type(type_set, path):
     parts = path.split(".")
@@ -26,34 +34,36 @@ def transformPathsIntoText(paths):
     quoted_paths = ['"{}",'.format(path) for path in sorted(set(paths))]
     return "\n" + "\n".join(quoted_paths)
 
-def templatedReplace(input_file, output_file, replacements):
-    with open(input_file, "r") as input_handle:
-        with open(output_file, "w") as output_handle:
-            contents = input_handle.read()
-            for replacement in replacements:
-                contents = contents.replace(replacement, replacements[replacement])
-            output_handle.write(contents)
+def writePathsAsStampedJSON(output_file, paths):
+    stamped = stampList(paths)
+    with open(output_file, "w") as output_handle:
+        output_handle.write(json.dumps(stamped))
 
 def main():
     parser = argparse.ArgumentParser(
                     description=__doc__)
-    parser.add_argument('--service-template', default="service-worker.template.js")
     parser.add_argument('--root-directory', default="../../")
-    parser.add_argument('--output', default="../../service-worker.js")
+    parser.add_argument('--output', default="./files.json")
     parser.add_argument('--types',
                         action='extend',
                         nargs='+',
-                        default=["txt", "js", "css", "md", "html", "json"])
+                        default=["txt", "js", "css", "md", "html"])
+    parser.add_argument('--default-entries',
+                        action='extend',
+                        nargs='+',
+                        default=[".",
+				 "manifest.json",
+				 "favicon.ico",
+				 "html/icons/icon-192.webp"])
+    
     args = parser.parse_args()
-    input_file=os.path.abspath(args.service_template)
     output_file=os.path.abspath(args.output)
     
     os.chdir(args.root_directory)
     files_list = listFiles(args.types)
-    replacements = {
-        "{extra_sources_here}": transformPathsIntoText(files_list)
-    }
-    templatedReplace(input_file, output_file, replacements)
+    defaults = list(args.default_entries)
+    defaults.extend(files_list)
+    writePathsAsStampedJSON(output_file, defaults)
     
 if __name__ == "__main__":
     main()
