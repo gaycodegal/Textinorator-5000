@@ -118,6 +118,7 @@ export class FreeTool {
 						this.repaint();
 						return;
 				}
+				this.taps = 0;
 				if (this.cancelled) return;
 				this.setStyle(this.bg_ctx);
 				drawFree(
