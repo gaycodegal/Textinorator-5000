@@ -5,8 +5,11 @@ import {setUpTextToolEvents} from "./logic/text-tool-set-up.js";
 import {setUpDrawToolEvents} from "./logic/set-up-draw-tool.js";
 import {setUpToolSelectors} from "./logic/set-up-tool-selector.js";
 import {setUpFocusEvents} from "./logic/set-up-focus-events.js";
+import {registerServiceWorker} from "./service-worker/register-sw.js";
+
 
 export function main() {
+		registerServiceWorker();
 		const canvas = DrawingCanvas.createMainCanvas(document.getElementById("container"));
 		window.canvas = canvas;
 

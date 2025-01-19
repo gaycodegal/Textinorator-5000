@@ -12,7 +12,6 @@ async function main() {
 				console.log(mainModule);
 				console.error(e);
 		});
-    
 }
 
 main();

@@ -24,15 +24,12 @@ def valid_type(type_set, path):
     else:
         return False
 
-def listFiles(types):
+def listFiles(types, exclude):
     type_set = set(types)
     files = glob.iglob('**/**', recursive=True)
-    paths = [path for path in files if valid_type(type_set, path)]
+    paths = [path for path in files if valid_type(type_set, path) and path not in exclude]
     return paths
 
-def transformPathsIntoText(paths):
-    quoted_paths = ['"{}",'.format(path) for path in sorted(set(paths))]
-    return "\n" + "\n".join(quoted_paths)
 
 def writePathsAsStampedJSON(output_file, paths):
     stamped = stampList(paths)
@@ -48,6 +45,10 @@ def main():
                         action='extend',
                         nargs='+',
                         default=["txt", "js", "css", "md", "html"])
+    parser.add_argument('--exclude',
+                        action='extend',
+                        nargs='+',
+                        default=["service-worker.js"])
     parser.add_argument('--default-entries',
                         action='extend',
                         nargs='+',
@@ -60,10 +61,10 @@ def main():
     output_file=os.path.abspath(args.output)
     
     os.chdir(args.root_directory)
-    files_list = listFiles(args.types)
+    files_list = listFiles(args.types, set(args.exclude))
     defaults = list(args.default_entries)
     defaults.extend(files_list)
-    writePathsAsStampedJSON(output_file, defaults)
+    writePathsAsStampedJSON(output_file, sorted(set(defaults)))
     
 if __name__ == "__main__":
     main()
