@@ -1,5 +1,7 @@
 export async function registerServiceWorker() {
-		if ("serviceWorker" in navigator) {
+		const urlParams = new URLSearchParams(window.location.search);
+		
+		if (urlParams.get('no-sw') == null && "serviceWorker" in navigator) {
 				try {
 						const registration = await navigator.serviceWorker.register("service-worker.js", {
 								scope: "/",

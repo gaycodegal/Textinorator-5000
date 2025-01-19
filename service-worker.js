@@ -1,9 +1,14 @@
-// as of python time 1737328931.0441234
+// as of python time 1737330832.8461514
 const CACHE_NAME = "v1";
 const STATE_DB_NAME = "ServiceWorkerDB";
 const STATE_DB_VERSION = 1;
 const STATE_DB_STORE_NAME = 1;
 const STAMPED_FILES_KEY = "stamped-files";
+const NO_CACHE = {
+		headers: {
+				'Cache-Control': 'no-cache'
+		}
+};
 
 function openStateObjectStore(db) {
 		return new Promise((success, reject) => {
@@ -89,8 +94,17 @@ function diffStampedLists(oldStamped, newStamped) {
 		return itemsInNeedOfUpdate(newStamped, oldMap);
 }
 
+function addAll(cache, resources) {
+		return Promise.all(
+				resources.map(async (url) => {
+						const response = await fetch(url, NO_CACHE);
+						await cache.put(url, response);
+				})
+		);
+}
+
 const addResourcesToCache = async () => {
-		const stampedPaths = await fetch('js/service-worker/files.json')
+		const stampedPaths = await fetch('js/service-worker/files.json', NO_CACHE)
 					.then(response=>response.json());
 		let cache = caches.open(CACHE_NAME);
 		let resources = null;
@@ -110,17 +124,22 @@ const addResourcesToCache = async () => {
 				return;
 		}
 		cache = await cache;
-		await cache.addAll(resources);
-
+		addAll(cache, resources);
+		console.log("updated cache");
+		
 		await stateObjectSet(
-				await openStateObjectStore(database),
-				STAMPED_FILES_KEY,
+			await openStateObjectStore(database),
+			STAMPED_FILES_KEY,
 				stampedPaths);
+
+		// use new cache immediately
+		await self.skipWaiting();
 };
 
 self.addEventListener("install", event => {
 		event.waitUntil(addResourcesToCache());
 });
+
 
 self.addEventListener("fetch", (event) => {
     const url = new URL(event.request.url);
