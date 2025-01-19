@@ -32,6 +32,8 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - Click and drag on a corner of focused text to resize it
 - Click on anything that isn't text and type your text in the input
   to add a new text line to the screen.
+- Double tapping the screen in draw mode will allow you
+	to scroll the screen on mobile
 
 
 ## TODO
@@ -42,3 +44,5 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - optional snap text to screen borders
 - set default font
 - an options page
+- undo/redo history
+- point specificity is subject to canvas scale; fix this

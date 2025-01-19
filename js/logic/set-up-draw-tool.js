@@ -36,7 +36,10 @@ export function setUpDrawToolEvents(drawTool, toolControlsElement) {
 											drawControlsElement,
 											drawColors, (color)=>{
 													const nextColor = cloneColor(color);
-													nextColor.strokeWidth = drawSizeSetter.value || 10;
+													nextColor.strokeWidth = Number.parseFloat(drawSizeSetter.value) || 10;
+													if (nextColor.strokeWidth < 3) {
+															nextColor.strokeWidth = 3;
+													}
 													return nextColor;
 											});
 		setUpDrawLineSizeEvents(drawTool.state.color,
