@@ -87,7 +87,6 @@ export class FreeTool {
 		}
 
 		onmove (sc, diff, isTrueDrag) {
-				if (!isTrueDrag) return;
 				if (this.cancelled) return;
 				this.setStyle(this.tctx);
 				var sb = this.stack.peek(),
