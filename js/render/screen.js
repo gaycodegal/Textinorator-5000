@@ -18,7 +18,7 @@ export class Screen {
 						draw: new FreeTool(canvas),
 				};
 				this.activeTool = this.tools.text;
-				this.dragListen = new DragListener(canvas.canvas, canvas.state.scale, this.snapRadius, this);
+				this.dragListen = new DragListener(canvas.canvas, canvas.state.scale, snapRadius, this);
 				this.dragListen.bind();
 				this.canvas.state.scale.bindListener(this.repaint.bind(this));
 		}
@@ -56,12 +56,12 @@ export class Screen {
 				return didFocus;
 		}
 
-		onmove(pt, moveOffset) {
+		onmove(pt, moveOffset, isTrueDrag) {
 				if (this.activeTool == null || this.activeTool.onmove == null) {
 						return;
 				}
 
-				return this.activeTool.onmove(pt, moveOffset);
+				return this.activeTool.onmove(pt, moveOffset, isTrueDrag);
 		}
 
 		onup(pt, moveOffset, moved) {

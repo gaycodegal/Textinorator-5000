@@ -83,7 +83,7 @@ export class DragListener {
 				}
 				const pt = this.pointFromEvent(event);
 				const diff = pt.subtract(this.downpoint);
-				const pointEqualsDown = this.checkTrueDrag(pt);
+				const pointEqualsDown = this.checkTrueDrag(pt, this.downpoint);
 				if (!pointEqualsDown) {
 						this.isTrueDrag = true;
 				}
@@ -97,7 +97,7 @@ export class DragListener {
 				event.preventDefault();
 				event.stopPropagation();
 				this.prev = pt;
-				this.listener.onmove(pt, diff);
+				this.listener.onmove(pt, diff, this.isTrueDrag);
 		}
 
 		onup (event) {

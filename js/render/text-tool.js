@@ -255,9 +255,13 @@ export class TextTool {
 				return this.focus != null;
 		}
 		
-		onmove(pt, moveOffset) {
+		onmove(pt, moveOffset, isTrueDrag) {
 				if (this.dragForwardListener != null) {
-						this.dragForwardListener.onmove(pt, moveOffset);
+						this.dragForwardListener.onmove(pt, moveOffset, isTrueDrag);
+						return;
+				}
+
+				if (!isTrueDrag) {
 						return;
 				}
 
