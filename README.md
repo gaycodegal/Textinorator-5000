@@ -44,5 +44,16 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - optional snap text to screen borders
 - set default font
 - an options page
+	- potentially have a refresh cache option user accessible
+	- add no-sw option
 - undo/redo history
 - point specificity is subject to canvas scale; fix this
+  - This is a fundamental limitation based on browser provided
+		events, to fix the canvas scale will need to be dynamically adjusted
+		by the user via the addition of a magnifying tool
+- text layer should be merged during editing events to prevent
+	costly text rendering calculations every frame
+- service worker Promise.all should be replaced with a more comprehensive
+	version that returns the stamped paths which succeeded.
+	Thus failed loads will not be recorded as successes
+- direct user to a user guide
