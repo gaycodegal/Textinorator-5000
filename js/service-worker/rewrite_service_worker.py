@@ -9,12 +9,12 @@ import pprint
 import json
 import time
 
-def stampFileEntry(filePath):
-    time = os.path.getmtime(filePath)
+def stampFileEntry(base_path, filePath):
+    time = os.path.getmtime(base_path + filePath)
     return {"path": filePath, "time": time}
 
-def stampList(paths):
-    return [stampFileEntry(path) for path in paths]
+def stampList(base_path, paths):
+    return [stampFileEntry(base_path, path) for path in paths]
 
 def valid_type(type_set, path):
     parts = path.split(".")
@@ -25,26 +25,28 @@ def valid_type(type_set, path):
     else:
         return False
 
-def listFiles(types, exclude):
+def listFiles(directory, types, exclude):
     type_set = set(types)
-    files = glob.iglob('**/**', recursive=True)
-    paths = [path for path in files if valid_type(type_set, path) and path not in exclude]
+    dir_len = len(directory)
+    files = glob.iglob(directory + '**/**', recursive=True)
+    paths = [path[dir_len:] for path in files if valid_type(type_set, path) and path not in exclude]
     return paths
 
-def templatedReplace(input_file, output_file, replacements):
+def templatedContents(input_file, replacements):
     with open(input_file, "r") as input_handle:
-        with open(output_file, "w") as output_handle:
-            contents = input_handle.read()
-            for replacement in replacements:
-                contents = contents.replace(replacement, replacements[replacement])
-            output_handle.write(contents)
+        contents = input_handle.read()
+        for replacement in replacements:
+            contents = contents.replace(replacement, replacements[replacement])
+        return contents
+
+
+def templatedReplace(input_file, output_file, replacements):
+    contents = templatedContents(input_file, replacements)
+    with open(output_file, "w") as output_handle:
+        output_handle.write(contents)
 
 def writePathsAsStampedJSON(output_file, stamped, force_sw_update = False):
-    contents = ["[\n"]
-    stamped_as_json = [json.dumps(item) for item in stamped]
-    contents.extend(",\n".join(stamped_as_json))
-    contents.append("\n]\n")
-    contents = "".join(contents)
+    contents = generate_files_json_content(stamped)
     different = False
     
     with open(output_file, "r") as output_handle:
@@ -65,6 +67,19 @@ def rewrite_worker(input_file, output_file):
     templatedReplace(input_file, output_file, {
         "{write-time}": str(write_time)
     })
+
+def generate_files_json_content(stamped):
+    contents = ["[\n"]
+    stamped_as_json = [json.dumps(item) for item in stamped]
+    contents.extend(",\n".join(stamped_as_json))
+    contents.append("\n]\n")
+    return "".join(contents)
+
+def generate_stamped(base_path, types, exclude, default_entries):
+    files_list = listFiles(base_path, types, set(exclude))
+    defaults = list(default_entries)
+    defaults.extend(files_list)
+    return stampList(base_path, sorted(set(defaults)))
 
 def main():
     parser = argparse.ArgumentParser(
@@ -97,10 +112,13 @@ def main():
     output_json_file=os.path.abspath(args.output_json)
     
     os.chdir(args.root_directory)
-    files_list = listFiles(args.types, set(args.exclude))
-    defaults = list(args.default_entries)
-    defaults.extend(files_list)
-    stamped = stampList(sorted(set(defaults)))
+
+    stamped = generate_stamped(
+        "",
+        args.types,
+        args.exclude,
+        args.default_entries)
+    
     if stamped[0]["path"] == "." and stamped[1]["path"] == "index.html":
         print("corrupt path entries")
         exit(1)
