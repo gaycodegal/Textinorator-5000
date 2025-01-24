@@ -34,9 +34,6 @@ Additionally, this tool is self contained, and can be hosted anywhere without ad
 - optional safety margin, so its easier to draw when at the size of the screen
 - optional snap text to screen borders
 - set default font
-- an options page
-	- potentially have a refresh cache option user accessible
-	- add no-sw option
 - undo/redo history
 - point specificity is subject to canvas scale; fix this
   - This is a fundamental limitation based on browser provided
