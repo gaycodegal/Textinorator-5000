@@ -15,6 +15,7 @@ function selectColor(focusedColorAtom, color, button, selected, processColor) {
 function makeColorButton(focusedColorAtom, parent, color, selected, processColor) {
 		const button = document.createElement("button");
 		const bubble = document.createElement("div");
+		button.setAttribute("aria-label", `select color: ${color.name}`);
 		button.appendChild(bubble);
 		button.classList.add("color-option");
 		bubble.style.background = color.fill;

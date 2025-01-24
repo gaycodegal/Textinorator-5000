@@ -11,3 +11,6 @@ files:
 
 color-scheme:
 	cd ./css/colors && lua build-colors.lua
+
+serve:
+	flask --app js/service-worker/serve.py run --debug
