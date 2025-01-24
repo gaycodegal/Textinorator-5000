@@ -48,12 +48,16 @@ function isInstalled() {
 
 
 function shouldInstall() {
-		const prefersOffline = localStorage.getItem(SHOULD_RUN_OFFLINE_KEY) == TRUE_VAL;
-		if (prefersOffline) {
+		const prefersOfflineVal = localStorage.getItem(SHOULD_RUN_OFFLINE_KEY);
+		if (prefersOfflineVal == TRUE_VAL) {
 				return true;
 		}
 		if (isInstalled()) {
 				return true;
+		}
+		if (prefersOfflineVal == FALSE_VAL) {
+				console.log("preferOffline false; offline mode not installed");
+				return false;
 		}
 		if (navigator.doNotTrack) {
 				console.log("do not track detected; offline mode not installed");
