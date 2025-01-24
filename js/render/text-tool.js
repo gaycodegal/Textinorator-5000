@@ -13,6 +13,14 @@ export class TextTool {
 				state.focusedTextVertical.bindListener(
 						this.setFocusedTextVertical.bind(this));
 
+				state.focusedTextItalic = atom(false);
+				state.focusedTextItalic.bindListener(
+						this.setFocusedTextItalic.bind(this));
+
+				state.focusedTextBold = atom(false);
+				state.focusedTextBold.bindListener(
+						this.setFocusedTextBold.bind(this));
+
 				state.focusedText = atom("");
 				state.focusedText.bindListener(
 						this.setFocusedText.bind(this));
@@ -49,6 +57,20 @@ export class TextTool {
 		setFocusedTextVertical(vertical) {
 				if (this.focus != null && vertical != this.focus.vertical) {
 						this.focus.setVertical(this.canvas, vertical);
+						this.repaint();
+				}
+		}
+
+		setFocusedTextItalic(italic) {
+				if (this.focus != null && italic != this.focus.italic) {
+						this.focus.setItalic(this.canvas, italic);
+						this.repaint();
+				}
+		}
+
+		setFocusedTextBold(bold) {
+				if (this.focus != null && bold != this.focus.bold) {
+						this.focus.setBold(this.canvas, bold);
 						this.repaint();
 				}
 		}

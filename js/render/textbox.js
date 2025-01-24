@@ -13,6 +13,8 @@ export class TextBox {
 				this.selected = true;
 				this.vertical = vertical;
 				this.retext(canvas, text);
+				this.italic = false;
+				this.bold = false;
     }
 
 		moveTo(point) {
@@ -39,6 +41,20 @@ export class TextBox {
 		setVertical(canvas, vertical) {
 				if (this.vertical != vertical) {
 						this.vertical = vertical;
+						this.resize(canvas);
+				}
+		}
+
+		setItalic(canvas, italic) {
+				if (this.italic != italic) {
+						this.italic = italic;
+						this.resize(canvas);
+				}
+		}
+		
+		setBold(canvas, bold) {
+				if (this.bold != bold) {
+						this.bold = bold;
 						this.resize(canvas);
 				}
 		}
@@ -108,7 +124,17 @@ export class TextBox {
 		}
 
 		get font() {
-				return `${this.fontSize}px ${this.fontFamily}`;
+				const font = [];
+				if (this.italic) {
+						font.push("italic");
+				}
+				if (this.bold) {
+						font.push("bold");
+				}
+				font.push(`${this.fontSize}px`);
+				font.push(this.fontFamily);
+				console.log(font);
+				return font.join(" ");
 		}
 
 		calculateSize(canvas, text, x, y, lineWidth) {

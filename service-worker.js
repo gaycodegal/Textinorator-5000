@@ -1,6 +1,5 @@
-// as of python time 1737695414.060007
+// as of python time 1737703819.0370443
 const CACHE_NAME = "v1";
-const FALLBACK_CACHE_NAME = "fallback";
 const STATE_DB_NAME = "ServiceWorkerDB";
 const STATE_DB_VERSION = 1;
 const STATE_DB_STORE_NAME = 1;
@@ -168,7 +167,6 @@ async function addResourcesToCache () {
 self.addEventListener("install", event => {
 		event.waitUntil(addResourcesToCache());
 });
-
 
 self.addEventListener("fetch", (event) => {
     const url = new URL(event.request.url);

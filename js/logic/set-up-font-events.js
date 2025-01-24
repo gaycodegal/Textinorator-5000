@@ -53,6 +53,40 @@ export function setUpFontVerticalEvent(focusedFontVerticalAtom, controls) {
 		fontVerticalInput.addEventListener("change", doSetFontVertical);
 }
 
+export function setUpFontBoldEvent(focusedFontBoldAtom, controls) {
+		const fontBoldInput = controls.getElementsByClassName("font-bold")[0];
+		function doSetFontBold() {
+				let value = fontBoldInput.checked;
+				focusedFontBoldAtom.set(value);
+		}
+		focusedFontBoldAtom.bindListener((isBold)=>{
+				const isFocused = document.activeElement == fontBoldInput;
+				if (!isFocused && fontBoldInput.checked != isBold) {
+						fontBoldInput.checked = isBold;
+						fontBoldInput.blur();
+				}
+		}, true);
+		fontBoldInput.addEventListener("change", doSetFontBold);
+}
+
+
+export function setUpFontItalicEvent(focusedFontItalicAtom, controls) {
+		const fontItalicInput = controls.getElementsByClassName("font-italic")[0];
+		function doSetFontItalic() {
+				let value = fontItalicInput.checked;
+				focusedFontItalicAtom.set(value);
+		}
+		focusedFontItalicAtom.bindListener((isItalic)=>{
+				const isFocused = document.activeElement == fontItalicInput;
+				if (!isFocused && fontItalicInput.checked != isItalic) {
+						fontItalicInput.checked = isItalic;
+						fontItalicInput.blur();
+				}
+		}, true);
+		fontItalicInput.addEventListener("change", doSetFontItalic);
+}
+
+
 
 export function setUpTextChangeEvents(focusedTextAtom, controls) {
 		const textSetter = controls.getElementsByClassName("text-setter")[0];

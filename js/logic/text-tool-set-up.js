@@ -1,5 +1,7 @@
 import {setUpFontSizeEvents,
 				setUpFontNameEvents,
+				setUpFontItalicEvent,
+				setUpFontBoldEvent,
 				setUpTextChangeEvents,
 				setUpDeleteTextEvent,
 				setUpFontVerticalEvent} from "./set-up-font-events.js";
@@ -14,6 +16,10 @@ export function setUpTextToolEvents(textTool, toolControlsElement) {
 												textControlsElement);
 		setUpFontNameEvents(textTool.state.focusedFontName,
 												textControlsElement);
+		setUpFontItalicEvent(textTool.state.focusedTextItalic,
+													textControlsElement)
+		setUpFontBoldEvent(textTool.state.focusedTextBold,
+													textControlsElement)
 		setUpTextChangeEvents(textTool.state.focusedText,
 													textControlsElement);
 		setUpFontVerticalEvent(textTool.state.focusedTextVertical,
