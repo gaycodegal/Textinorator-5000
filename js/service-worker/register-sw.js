@@ -1,13 +1,25 @@
 const SHOULD_RUN_OFFLINE_KEY = "shouldRunOffline";
 const IS_INSTALLED_KEY = "isInstalled";
+const TRUE_VAL = "true";
 
 function isInstalled() {
-		const isInstalled = localStorage.getItem(IS_INSTALLED_KEY) == "installed";
+		const wasInstalled = localStorage.getItem(IS_INSTALLED_KEY) == TRUE_VAL;
+		if (wasInstalled) {
+				return true;
+		}
 
-		return isInstalled
-				|| window.matchMedia('(display-mode: standalone)').matches
-				|| document.referrer.startsWith('android-app://')
-				|| navigator.standalone;
+		
+		const detectedInstalled =
+					window.matchMedia('(display-mode: minimal-ui)').matches
+					|| window.matchMedia('(display-mode: standalone)').matches
+					|| document.referrer.startsWith('android-app://')
+					|| navigator.standalone;
+
+		if (detectedInstalled) {
+				localStorage.setItem(IS_INSTALLED_KEY, TRUE_VAL);
+		}
+
+		return detectedInstalled;
 }
 
 function shouldInstall() {
