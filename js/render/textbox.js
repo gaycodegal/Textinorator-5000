@@ -133,7 +133,6 @@ export class TextBox {
 				}
 				font.push(`${this.fontSize}px`);
 				font.push(this.fontFamily);
-				console.log(font);
 				return font.join(" ");
 		}
 
