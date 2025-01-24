@@ -1,6 +1,35 @@
+const SHOULD_RUN_OFFLINE_KEY = "shouldRunOffline";
+const IS_INSTALLED_KEY = "isInstalled";
 
+function isInstalled() {
+		const isInstalled = localStorage.getItem(IS_INSTALLED_KEY) == "installed";
+
+		return isInstalled
+				|| window.matchMedia('(display-mode: standalone)').matches
+				|| document.referrer.startsWith('android-app://')
+				|| navigator.standalone;
+}
+
+function shouldInstall() {
+		const prefersOffline = localStorage.getItem(SHOULD_RUN_OFFLINE_KEY) == "offline";
+		if (prefersOffline) {
+				return true;
+		}
+		if (isInstalled()) {
+				return true;
+		}
+		if (navigator.doNotTrack) {
+				console.log("do not track detected; offline mode not installed");
+				return false;
+		}
+		return true;
+}
 
 async function installServiceWorker() {
+		if (!shouldInstall()) {
+				console.log("did not install");
+				return;
+		}
 		try {
 				const registration = await navigator.serviceWorker.register("service-worker.js", {
 						scope: "/",
