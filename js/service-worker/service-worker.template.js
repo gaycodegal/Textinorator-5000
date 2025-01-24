@@ -94,16 +94,40 @@ function diffStampedLists(oldStamped, newStamped) {
 		return itemsInNeedOfUpdate(newStamped, oldMap);
 }
 
+
+/**
+	 add all resources to the cache. returns
+	 a promise with a list of all resource urls
+	 that failed to load properly
+ */
 function addAll(cache, resources) {
 		return Promise.all(
 				resources.map(async (url) => {
-						const response = await fetch(url, NO_CACHE);
-						await cache.put(url, response);
+						try {
+								const response = await fetch(url, NO_CACHE);
+								if (!response.ok) {
+										return url;
+								}
+								await cache.put(url, response);
+								return null;
+						} catch(e) {
+								return url;
+						}
 				})
 		);
 }
 
-const addResourcesToCache = async () => {
+function removeFailedUrlsFromStampedFiles(failedUrls, stampedPaths) {
+		const urls = {};
+		for (let url of failedUrls) {
+				if (url != null) {
+						urls[url] = true;
+				}
+		}
+		return stampedPaths.filter(item=>!(item.path in urls));
+}
+
+async function addResourcesToCache () {
 		const stampedPaths = await fetch('js/service-worker/files.json', NO_CACHE)
 					.then(response=>response.json());
 		let cache = caches.open(CACHE_NAME);
@@ -124,13 +148,17 @@ const addResourcesToCache = async () => {
 				return;
 		}
 		cache = await cache;
-		addAll(cache, resources);
+		const failedUrls = await addAll(cache, resources);
+		const updatedStampedPaths = removeFailedUrlsFromStampedFiles(
+				failedUrls, stampedPaths
+		);
+		
 		console.log("updated cache");
 		
 		await stateObjectSet(
 			await openStateObjectStore(database),
 			STAMPED_FILES_KEY,
-				stampedPaths);
+				updatedStampedPaths);
 
 		// use new cache immediately
 		await self.skipWaiting();
@@ -139,7 +167,6 @@ const addResourcesToCache = async () => {
 self.addEventListener("install", event => {
 		event.waitUntil(addResourcesToCache());
 });
-
 
 self.addEventListener("fetch", (event) => {
     const url = new URL(event.request.url);
