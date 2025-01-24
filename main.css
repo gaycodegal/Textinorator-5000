@@ -90,6 +90,10 @@ footer {
 		margin: 0px;
 }
 
+footer a, footer button {
+		margin: 0 20px 0 0;
+}
+
 .noselect {
     -webkit-touch-callout: none;
     /* iOS Safari */

@@ -19,10 +19,10 @@ export function getShouldInstallPref() {
 				|| localStorage.getItem(IS_INSTALLED_KEY) == TRUE_VAL;
 }
 
-export function setShouldInstallPref(offline) {
+export function setShouldInstallPref(offline, path = "") {
 		localStorage.setItem(SHOULD_RUN_OFFLINE_KEY, boolOf(offline));
 		if (offline) {
-				installServiceWorker();
+				installServiceWorker(path);
 		} else {
 				removeServiceWorker();
 		}
@@ -62,12 +62,12 @@ function shouldInstall() {
 		return true;
 }
 
-async function installServiceWorker() {
+async function installServiceWorker(path = "") {
 		if (!shouldInstall()) {
 				return;
 		}
 		try {
-				const registration = await navigator.serviceWorker.register("service-worker.js", {
+				const registration = await navigator.serviceWorker.register(path + "service-worker.js", {
 						scope: "/",
 				});
 
@@ -97,6 +97,7 @@ async function removeServiceWorker() {
 		if (serviceWorker == null) {
 				return;
 		}
+		console.log("removed service worker");
 		serviceWorker.unregister();
 }
 
