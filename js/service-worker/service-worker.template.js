@@ -168,9 +168,17 @@ self.addEventListener("install", event => {
 		event.waitUntil(addResourcesToCache());
 });
 
+async function resolveUrl(url) {
+		const val = await caches.match(url.toString());
+		if (!val) {
+				return await fetch(url);
+		}
+		return val;
+}
+
 self.addEventListener("fetch", (event) => {
     const url = new URL(event.request.url);
     url.hash = "";
     url.search = "";
-    event.respondWith(caches.match(url.toString()));
+    event.respondWith(resolveUrl(url));
 });
