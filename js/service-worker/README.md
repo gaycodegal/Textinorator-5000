@@ -57,3 +57,7 @@ version of it from the server, so we make all fetch
 requests related to updating files supply the no-cache
 header
 
+## TODO
+
+- Cache the intended state of active pages. If a page is
+not archived during install, attempt to archive it later
