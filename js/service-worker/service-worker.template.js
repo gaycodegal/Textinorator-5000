@@ -106,6 +106,11 @@ function addAll(cache, resources) {
 						try {
 								const response = await fetch(url, NO_CACHE);
 								if (!response.ok) {
+										// we've failed to get the resource
+										// so it will be repopulated
+										// next time it is requested
+										// or when the service worker is reinstalled
+										await cache.delete(url);
 										return url;
 								}
 								await cache.put(url, response);
@@ -168,10 +173,39 @@ self.addEventListener("install", event => {
 		event.waitUntil(addResourcesToCache());
 });
 
+async function addToCacheAsync(url, response) {
+		// if we experienced an error, don't add it to the cache
+		if (!response.ok) {
+				return null;
+		}
+		let cache = await caches.open(CACHE_NAME);
+		await cache.put(url.pathname, response);
+}
+
+function addToCache(url, response) {
+		// add a copy of this resource to the cache
+		const cloned = response.clone();
+		return addToCacheAsync(url, cloned);
+}
+
 async function resolveUrl(url) {
 		const val = await caches.match(url.toString());
+
+		// we did not find that url in our cache
+		// possibly because of a server issue at install time
 		if (!val) {
-				return await fetch(url);
+				const baseUrl = new URL(location.href);
+				if (baseUrl.origin != url.origin) {
+						// it's an external url, shouldn't be in our cache
+						// direct the user to the real resource
+						return await fetch(url);
+				}
+
+				// It is part of our app, request the latest version
+				// of the resource and add it to our cache
+				const fetched = await fetch(url, NO_CACHE);
+				addToCache(url, fetched);
+				return fetched;
 		}
 		return val;
 }

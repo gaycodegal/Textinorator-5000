@@ -61,3 +61,8 @@ header
 
 - Cache the intended state of active pages. If a page is
 not archived during install, attempt to archive it later
+- Use git to determine timestamp
+
+```bash
+	git log -1 --pretty="format:%ci" index.html
+```
