@@ -21,6 +21,10 @@ export class Stack {
 		}
 
 		pop () {
+				if (this.fill <= 0) {
+						this.fill = 0;
+						return undefined;
+				}
 				return this.data[--this.fill];
 		}
 
@@ -47,5 +51,11 @@ export class Stack {
 
 		wipe () {
 				this.fill = 0;
+		}
+
+		forEach(lambda) {
+				for (let i = 0; i < this.fill; ++i) {
+						lambda(this.data[i], i);
+				}
 		}
 }

@@ -41,3 +41,9 @@
 		color: var(--color-button-bg);
 		border-color: var(--color-button-bg);
 }
+
+.tool-button:active {
+		background: var(--color-button-fg);
+		color: var(--color-button-bg);
+		border-color: var(--color-button-bg);
+}

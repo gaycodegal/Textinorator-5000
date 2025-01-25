@@ -7,7 +7,7 @@ import {shouldWorkaroundChromium} from "./should-workaround-chromium.js";
 window.IS_HIGH_DEF = ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
 
 export class DrawingCanvas {
-    constructor(){
+    constructor(history){
 				// live state
 				const state = {};
 				this.state = state;
@@ -18,6 +18,8 @@ export class DrawingCanvas {
 				state.size.bindListener(this.changeSize.bind(this));
 				state.shouldExpandImageToScreenWidth = atom(true);
 
+
+				this.history = history;
 				this.origin = new Point(0,0);
 				
 				this.canvas = document.createElement("canvas");
@@ -130,6 +132,8 @@ export class DrawingCanvas {
     }
 
 		setBackground(img) {
+				this.history.wipe();
+				this.background = img;
 				this.resize(img.width, img.height);
 				console.log(img.width, img.height)
 				this.bg_ctx.drawImage(img, 0, 0);
@@ -138,6 +142,15 @@ export class DrawingCanvas {
 				} else {
 						this.state.scale.notifyListeners();
 				}
+		}
+
+		restrokeBackground() {
+				const {width, height} = this.state.size.get();
+				this.bg_ctx.clearRect(0,0, width, height);
+				if (this.background) {
+						this.bg_ctx.drawImage(this.background, 0, 0);
+				}
+				this.history.forEach(drawable=>drawable.draw(this, this.bg_ctx));
 		}
 }
 

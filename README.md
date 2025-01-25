@@ -45,7 +45,6 @@ than something browsers force.
 
 - optional snap text to screen borders
 - set default font
-- undo/redo history
 - direct user to a user guide, preferrably static
 	content generated from markdown, which supports
 	dynamic theming

@@ -1,7 +1,8 @@
 import {Point} from "../math/point.js";
+import {FreeLine, drawQuad, drawFree, drawLine} from "./free-line.js";
 import {Stack} from "../math/stack.js";
 import {atom} from "../state/atom.js";
-import {drawColors} from "../logic/colors.js";
+import {drawColors, cloneColor} from "../logic/colors.js";
 
 
 /////////////////////
@@ -9,7 +10,7 @@ import {drawColors} from "../logic/colors.js";
 /////////////////////
 
 export class FreeTool {
-		constructor(canvas) {
+		constructor(canvas, history) {
 				this.state = {};
 				this.state.color = atom(drawColors[0]);
 				this.state.suspended = atom(false);
@@ -21,6 +22,7 @@ export class FreeTool {
 
 				this.cancelled = false;
 				this.delay = 0;
+				this.history = history;
 				this.setContext(canvas);
 		}
 
@@ -127,45 +129,9 @@ export class FreeTool {
 						this.stack.fill,
 						this.context.origin);
  				this.context.repaint();
+				this.history.push(
+						new FreeLine(
+								this.stack.data.slice(0, this.stack.fill),
+								cloneColor(this.state.color.get())));
 		}
-}
-
-function drawQuad(ctx, a, b, c, o) {
-  var x = o.x,
-    y = o.y;
-  ctx.beginPath();
-  ctx.moveTo(a.x + x, a.y + y);
-  ctx.quadraticCurveTo(b.x + x, b.y + y, c.x + x, c.y + y);
-  ctx.stroke();
-}
-
-function drawFree(ctx, data, len, o) {
-  var x = o.x,
-    y = o.y;
-  var i = 1;
-  var pA = data[i];
-  var pB = data[i - 1];
-  if (len < 3) {
-    if (len == 2)
-      drawLine(ctx, pA, pB, o);
-    return;
-  }
-  ctx.beginPath();
-  ctx.moveTo(pA.x + x, pA.y + y);
-  while (i < len) {
-    var m = pA.midPoint(pB);
-    ctx.quadraticCurveTo(pA.x + x, pA.y + y, m.x + x, m.y + y);
-    pA = data[i];
-    pB = data[++i];
-  }
-  ctx.stroke();
-}
-
-function drawLine(ctx, a, b, o) {
-  var x = o.x,
-    y = o.y;
-  ctx.beginPath();
-  ctx.moveTo(a.x + x, a.y + y);
-  ctx.lineTo(b.x + x, b.y + y);
-  ctx.stroke();
 }
