@@ -63,3 +63,26 @@ than something browsers force.
 - optional safety margin, so its easier to draw when at the size of the screen
 - Upload custom fonts (to be cached in browser)
 - Rotation
+
+
+## Known issues
+
+### Firefox
+- Vertical text doesn't support shadow
+- Bold text doesn't recognize emoji boundaries
+- Bold text with shadow and emoji cuts them weirdly
+- You can make bold emoji with firefox (this is funny)
+
+### Chrome
+- Vertical text is very weird and requires "manual" rotation
+	and adjustment during the drawing process
+
+### Non-specific
+- I am concerned that the measureText returns different values
+	for Firefox and Chrome. During normal text operations,
+	this balances out with just normal math to calculate size.
+	However, during vertical text rendering, the math gets really
+	wonky, and doesn't adequately account for rendered text
+	proporitions. Because the values are different on both
+	platforms AND it no longer balances out, vertical
+	text boundary boxes are a little worse.
