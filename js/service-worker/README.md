@@ -23,8 +23,11 @@ this information. This is ideal for static hosts
 that cannot rely on a scripted server but not
 for development.
 
-A sample server will be provided to fix this
-inconvenience shortly.
+You can use the provided server to serve the
+files.json and service-worker.js so that
+they are automatically updated as necessary.
+
+see `make serve` in the root directory.
 
 ## How does this minimize fetch requests
 
