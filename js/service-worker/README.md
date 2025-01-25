@@ -57,10 +57,19 @@ version of it from the server, so we make all fetch
 requests related to updating files supply the no-cache
 header
 
+## Failure to cache
+
+If a file is failed to cache, the file will always be requested
+with no-cache header every time the app tries to use it.
+
+Whenever it succeeds it will be added to cache.
+
+If a file is failed to cache during any install/update,
+the old version of that file will be removed from the
+cache to prevent errors
+
 ## TODO
 
-- Cache the intended state of active pages. If a page is
-not archived during install, attempt to archive it later
 - Use git to determine timestamp
 
 ```bash
