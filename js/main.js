@@ -37,7 +37,7 @@ export function main() {
 	setUpImageCaptureOnPaste(screen, generalControlsElement);
 	setUpImageSaveOnCopy(screen, generalControlsElement);
 
-	screen.tools.text.strokeText("text here 😊", 0,0);
+	screen.tools.text.strokeText("text here 😊", 0, 200);
 
 	//scroll to expose image controls
 	window.scroll(0, 100);

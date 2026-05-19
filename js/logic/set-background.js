@@ -54,6 +54,7 @@ function setAsBackground(self, e) {
         var img = new Image();
         img.onload = function(){
 			self.screen.canvas.setBackground(img);
+			self.screen.clearIfClean();
 			window.scrollTo(0,0);
         }
         img.src = event.target.result;

@@ -46,7 +46,8 @@ export class TextTool {
 				this.downpoint = null;
 				this.dragForwardListener = null;
 				this.startedWithFocus = false;
-				this.lastPoint = null;
+			this.lastPoint = null;
+			this.isClean = true;
 		}
 
 		onselected() {
@@ -55,6 +56,7 @@ export class TextTool {
 		}
 
 		setFocusedTextVertical(vertical) {
+			this.isClean = false;
 				if (this.focus != null && vertical != this.focus.vertical) {
 						this.focus.setVertical(this.canvas, vertical);
 						this.repaint();
@@ -62,6 +64,7 @@ export class TextTool {
 		}
 
 		setFocusedTextItalic(italic) {
+			this.isClean = false;
 				if (this.focus != null && italic != this.focus.italic) {
 						this.focus.setItalic(this.canvas, italic);
 						this.repaint();
@@ -69,6 +72,7 @@ export class TextTool {
 		}
 
 		setFocusedTextBold(bold) {
+			this.isClean = false;
 				if (this.focus != null && bold != this.focus.bold) {
 						this.focus.setBold(this.canvas, bold);
 						this.repaint();
@@ -76,6 +80,7 @@ export class TextTool {
 		}
 
 		setFocusedTextSize(size) {
+			this.isClean = false;
 				if (this.focus != null && size != this.focus.fontSize) {
 						this.focus.setFontSize(this.canvas, size);
 						this.repaint();
@@ -83,6 +88,7 @@ export class TextTool {
 		}
 
 		setFocusedFontName(name) {
+			this.isClean = false;
 				if (this.focus != null && name != this.focus.fontFamily) {
 						this.focus.setFontName(this.canvas, name);
 						this.repaint();
@@ -90,6 +96,7 @@ export class TextTool {
 		}
 
 		setFocusedColor(color) {
+			this.isClean = false;
 				if (this.focus != null && this.focus.color != color) {
 						this.focus.setColor(this.canvas, cloneColor(color));
 						this.repaint();
@@ -118,10 +125,12 @@ export class TextTool {
 		}
 
 		deleteFocusedText() {
+			this.isClean = false;
 				this.deleteTextBox(this.focus);
 		}
 		
 		deleteTextBox(box) {
+			this.isClean = false;
 				const indexToRemoveDrawable = this.canvas.drawables.indexOf(box);
 				if (indexToRemoveDrawable != -1) {
 						this.canvas.drawables.splice(indexToRemoveDrawable, 1);
@@ -143,6 +152,7 @@ export class TextTool {
 		}
 
 		setFocusedText(text) {
+			this.isClean = false;
 				if (this.focus != null) {
 						if (this.focus.text == text) {
 								return;
@@ -165,6 +175,7 @@ export class TextTool {
 				this.state.focusedText.set(focusedTextValue);
 				this.refreshFontSize();
 				if (this.focus != null) {
+					this.isClean = false;
 						const fontName = this.getFocusedFontName(this.focus);
 						this.state.focusedFontName.set(fontName);
 						const focusColor = this.getFocusedColor(this.focus);

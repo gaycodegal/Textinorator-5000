@@ -19,6 +19,7 @@ export class Screen {
 						text: new TextTool(canvas, snapRadius, clickRadius),
 						draw: new FreeTool(canvas, this.history),
 				};
+				this.activeToolName = "text";
 				this.activeTool = this.tools.text;
 				this.dragListen = new DragListener(canvas.canvas, canvas.state.scale, snapRadius, this);
 				this.dragListen.bind();
@@ -41,8 +42,20 @@ export class Screen {
 				if (this.tools[tool] == null) {
 						return;
 				}
+				this.activeToolName = tool;
 				this.activeTool = this.tools[tool];
 				this.activeTool.onselected(tool);
+		}
+
+	clearIfClean() {
+		if (this.activeToolName == "text" && this.activeTool.isClean) {
+			this.clear();
+		}
+	}
+	
+		clear() {
+			this.canvas.drawables = [];
+			this.setActiveTool(this.activeToolName);
 		}
 
 		repaint() {

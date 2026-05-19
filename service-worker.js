@@ -1,4 +1,4 @@
-// as of python time 1779227105.4301147
+// as of python time 1779228295.767825
 const CACHE_NAME = "v1";
 const STATE_DB_NAME = "ServiceWorkerDB";
 const STATE_DB_VERSION = 1;
