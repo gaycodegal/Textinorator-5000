@@ -16,25 +16,40 @@ export function setUpDownloadButton(screen, controls) {
 		});
 }
 
+export function setUpImageCaptureOnPaste(screen, controls) {
+	document.addEventListener("paste", (event) => {
+		const clipboardData = event.clipboardData || window.clipboardData;
+		const file = clipboardData.files[0];
 
-function setAsBackground(e){
-		const self = this;
+		const picker = controls.getElementsByClassName("image-picker")[0];
+		const downloadName = controls.getElementsByClassName("image-name")[0];
+		setAsBackground({screen, downloadName}, {target:{
+			files: [file]
+		}});
+	});
+}
+
+function setAsBackground(self, e) {
     var reader = new FileReader();
     reader.onload = function(event){
         var img = new Image();
         img.onload = function(){
-						self.screen.canvas.setBackground(img);
-						window.scrollTo(0,0);
+			self.screen.canvas.setBackground(img);
+			window.scrollTo(0,0);
         }
         img.src = event.target.result;
     }
-		const file = e.target.files[0];
+	const file = e.target.files[0];
     reader.readAsDataURL(file);
-		this.downloadName.value = file.name;
+	self.downloadName.value = file.name;
 }
+
+function setAsBackgroundWrapper(e){
+	setAsBackground(this, e);
+}
+
 export function setUpBackgroundSetter(screen, controls) {
 		const picker = controls.getElementsByClassName("image-picker")[0];
 		const downloadName = controls.getElementsByClassName("image-name")[0];
-		picker.addEventListener('change', setAsBackground.bind({screen, downloadName}), false);
-
+		picker.addEventListener('change', setAsBackgroundWrapper.bind({screen, downloadName}), false);
 }
