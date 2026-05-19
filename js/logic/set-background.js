@@ -16,8 +16,27 @@ export function setUpDownloadButton(screen, controls) {
 		});
 }
 
+export function setUpImageSaveOnCopy(screen, controls) {
+	document.addEventListener("copy", (event) => {
+		if (event.target.tagName.toLowerCase() == "input") {
+			return;
+		}
+		screen.canvas.repaint();
+		screen.canvas.canvas.toBlob((blob) => {
+			navigator.clipboard.write([
+				new ClipboardItem({
+					'image/png': blob
+				})
+			]);
+		});
+	});
+}
+
 export function setUpImageCaptureOnPaste(screen, controls) {
 	document.addEventListener("paste", (event) => {
+		if (event.target.tagName.toLowerCase() == "input") {
+			return;
+		}
 		const clipboardData = event.clipboardData || window.clipboardData;
 		const file = clipboardData.files[0];
 

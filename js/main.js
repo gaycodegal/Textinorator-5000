@@ -1,6 +1,9 @@
 import * as DrawingCanvas from "./render/canvas.js";
 import {Screen} from "./render/screen.js";
-import {setUpBackgroundSetter, setUpDownloadButton, setUpImageCaptureOnPaste} from "./logic/set-background.js";
+import {setUpBackgroundSetter,
+		setUpDownloadButton,
+		setUpImageCaptureOnPaste,
+		setUpImageSaveOnCopy} from "./logic/set-background.js";
 import {setUpTextToolEvents} from "./logic/text-tool-set-up.js";
 import {setUpDrawToolEvents} from "./logic/set-up-draw-tool.js";
 import {setUpToolSelectors} from "./logic/set-up-tool-selector.js";
@@ -32,6 +35,7 @@ export function main() {
 	setUpBackgroundSetter(screen, generalControlsElement);
 	setUpDownloadButton(screen, generalControlsElement);
 	setUpImageCaptureOnPaste(screen, generalControlsElement);
+	setUpImageSaveOnCopy(screen, generalControlsElement);
 
 	screen.tools.text.strokeText("text here 😊", 0,0);
 
